@@ -117,6 +117,7 @@ typedef enum
   */
 #define LCD_FB_START_ADDRESS       ((uint32_t)0xC0000000)
 
+
 /**
   * @brief  LCD color
   */

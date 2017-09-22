@@ -147,6 +147,7 @@ static void LL_ConvertLineToARGB8888(void * pSrc, void *pDst, uint32_t xSize, ui
   */
 uint8_t BSP_LCD_Init(void)
 {
+  ActiveLayer = 1;
   /* Select the used LCD */
 
   /* The RK043FN48H LCD 480x272 is selected */
@@ -230,6 +231,7 @@ uint8_t BSP_LCD_DeInit(void)
   */
 uint32_t BSP_LCD_GetXSize(void)
 {
+  return 480;
   return hLtdcHandler.LayerCfg[ActiveLayer].ImageWidth;
 }
 
@@ -239,6 +241,7 @@ uint32_t BSP_LCD_GetXSize(void)
   */
 uint32_t BSP_LCD_GetYSize(void)
 {
+  return 272;
   return hLtdcHandler.LayerCfg[ActiveLayer].ImageHeight;
 }
 

@@ -226,11 +226,14 @@ void BSP_SDRAM_Initialization_sequence(uint32_t RefreshCount)
 
   /* Step 2: Insert 100 us minimum delay */
   /* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
-  //HAL_Delay(1);
+
+  HAL_Delay(2);
+
+/*
   unsigned int loops = 216000000/1000;
   while (loops--)
     __asm("nop");
-
+*/
   /* Step 3: Configure a PALL (precharge all) command */
   Command.CommandMode            = FMC_SDRAM_CMD_PALL;
   Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
