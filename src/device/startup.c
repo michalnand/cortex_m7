@@ -8,8 +8,12 @@ extern "C" {
 
 // Memory locations defined by the linker
 extern uint32_t _estack[];
-extern uint32_t _sdata[], _edata[];
+extern uint32_t _sdata[], _edata[], _sidata[];
+extern uint32_t _sbss[], _ebss[];
 extern uint32_t _etext[];                // End of code/flash
+
+
+
 
 
 //  Default interrupt handler
@@ -29,7 +33,7 @@ void __attribute__((interrupt("IRQ"))) HardFault_Handler()
 }
 
 
-void Reset_Handler() __attribute__((naked, aligned(2)));
+void Reset_Handler() __attribute__((naked, aligned(4)));
 
 /* Weak definitions of handlers point to Default_Handler if not implemented */
 void NMI_Handler()          __attribute__ ((weak, alias("Default_Handler")));
@@ -143,7 +147,7 @@ void SPDIF_RX_IRQHandler() __attribute__((weak, alias("Default_Handler")));     
 // ----------------------------------------------------------------------------------
 // Interrupt vector table (loaded into flash memory at 0x000)
 //
-void (* const InterruptVector[])() __attribute__ ((section(".isr_vector"), aligned(2))) = {
+void (* const InterruptVector[])() __attribute__ ((section(".isr_vector"), aligned(4))) = {
     (void(*)(void)) (int)_estack,                // Initial stack pointer
     Reset_Handler,                                    // Reset handler
     NMI_Handler,
@@ -274,7 +278,8 @@ inline void static_init()
 {
   void (**p)() = &__init_array_start;
 
-  for (unsigned int i = 0; i < (&__init_array_end - &__init_array_start); i++)
+  unsigned int i;
+  for (i = 0; i < (&__init_array_end - &__init_array_start); i++)
   {
     p[i]();
   }
@@ -295,18 +300,32 @@ void __aeabi_atexit()
 
 void Reset_Handler(void)
 {
-    // copy values to initialize data segment
-    uint32_t *fr = _etext;
-    uint32_t *to = _sdata;
-    unsigned int len = _edata - _sdata;
-    while(len--)
-        *to++ = *fr++;
+    uint32_t *sidata = _sidata;
+    uint32_t *sdata = _sdata;
+    uint32_t *edata = _edata;
+
+    while (sdata != edata)
+    {
+      *sdata = *sidata;
+      sidata++;
+      sdata++;
+    }
+
+    uint32_t *sbss = _sbss;
+    uint32_t *ebss = _ebss;
+    while (sbss != ebss)
+    {
+      *sbss++ = 0;
+    }
+
 
     // enable FPU
     SCB->CPACR|= (1<<20)|(1<<21)|(1<<22)|(1<<23);   //full access
     FPU->FPCCR&=~((1<<31)|(1<<30));                 //disable context saving, single thread FPU!!
 
     static_init();
+
+    SystemInit();
 
     main();
 }

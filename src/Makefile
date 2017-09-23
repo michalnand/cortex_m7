@@ -1,19 +1,21 @@
-CXX_SRCS = $(shell find  -name '*.cpp')
+CXX_SRCS+= $(shell find  -name '*.cpp')
+
 
 
 C_SRCS = device/startup.c
 C_SRCS+= device/system.c
-C_SRCS+= $(shell find  ./device/CMSIS/Source -name '*.c')
+C_SRCS+= device/core.c
+#C_SRCS+= main.c
+
+C_SRCS+= $(shell find  ./device/CMSIS -name '*.c')
 C_SRCS+= $(shell find  ./device/STM32F7xx_HAL_Driver/Src -name '*.c')
-C_SRCS+= $(shell find  ./drivers -name '*.c')
 
 
 INC = -I .
-INC+= -I ./device/CMSIS/Include/
+INC+= -I ./device/CMSIS/
 INC+= -I ./device/STM32F7xx_HAL_Driver/Inc/
-INC+= -I ./drivers/
 
-TARGET = -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant
+TARGET = -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -DSTM32F746xx
 
 
 GCCPREFIX=arm-none-eabi-
@@ -29,16 +31,21 @@ OBJDUMP = $(GCCPREFIX)objdump
 SIZE = $(GCCPREFIX)size
 
 
-CCFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c99 $(INC)
+CCFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c99 $(INC) 
 CCFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual -Wno-unused-variable -Wno-unused-parameter
 CCFLAGS+= $(TARGET) -fdata-sections -ffunction-sections
 
 
-CXXFLAGS = -c -O2 -Os -s -Wall -Wextra -pedantic -std=c++14  -fno-rtti -fno-exceptions $(INC)
+CXXFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c++11 $(INC) -fno-rtti -fno-exceptions
 CXXFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 CXXFLAGS+= $(TARGET) -fdata-sections -ffunction-sections
 
 LDFLAGS = -T$(LDSCRIPT) $(TARGET) -Wl,--gc-sections --specs=nosys.specs
+
+
+
+
+
 
 
 C_OBJS = $(C_SRCS:.c=.o)
