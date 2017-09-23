@@ -4,12 +4,53 @@
 #include "external/lcd.h"
 #include "image.cimg"   //include image from gimp, as C array
 
+unsigned int __rnd__ = 1;
+
+unsigned int rnd()
+{
+  __rnd__ = 27*__rnd__ + 55;
+  return __rnd__;
+}
+
+
+struct sSquare
+{
+  int x, y;
+  int dx, dy;
+  unsigned int r, g, b;
+};
+
+#define SQUARES_COUNT   ((unsigned int)200)
+
+struct sSquare squares[SQUARES_COUNT];
+
 
 CLCDDemo::CLCDDemo()
 {
   transparency = 0;
-  fractal_demo_state = 0;;
+  fractal_demo_state = 0;
   fractal_demo_time = 0;
+
+  for (unsigned int j = 0; j < SQUARES_COUNT; j++)
+  {
+
+    squares[j].x = rnd()%lcd.get_width();
+    squares[j].y = rnd()%lcd.get_height();
+
+    if (rnd()%2)
+      squares[j].dx = 2;
+    else
+      squares[j].dx = -2;
+
+    if (rnd()%2)
+      squares[j].dy = 2;
+    else
+      squares[j].dy = -2;
+
+    squares[j].r = rnd()%256;
+    squares[j].g = rnd()%256;
+    squares[j].b = rnd()%256;
+  }
 }
 
 CLCDDemo::~CLCDDemo()
@@ -19,16 +60,21 @@ CLCDDemo::~CLCDDemo()
 
 void CLCDDemo::run()
 {
-  lcd.SetLayer_1();
+  //lcd.SetLayer_1();
+  lcd.Refresh();
   show_image();
 
+  /*
   lcd.SetLayer_2();
   lcd.SetTransparency(transparency);
+
 
   if (transparency < 255)
     transparency++;
 
   fractal();
+  */
+  squares_demo();
 }
 
 void CLCDDemo::show_image()
@@ -49,7 +95,7 @@ void CLCDDemo::show_image()
 
       unsigned int tmp = (b >> 3) | ((g >> 2) << 5) | ((r >> 3) << 11);
       lcd.DrawPixel(tmp);
-    } 
+    }
 }
 
 
@@ -103,7 +149,63 @@ void CLCDDemo::fractal()
 
 }
 
+void CLCDDemo::squares_demo()
+{
+  int size = 4;
 
+  for (unsigned int j = 0; j < SQUARES_COUNT; j++)
+  {
+    paint_rectangle(squares[j].y, squares[j].x,
+                    size, size,
+                    squares[j].r, squares[j].g, squares[j].b);
+
+
+    squares[j].x+= squares[j].dx;
+    squares[j].y+= squares[j].dy;
+
+    for (unsigned int i = 0; i < SQUARES_COUNT; i++)
+      if (i != j)
+      {
+        int dist_x = squares[i].x - squares[j].x;
+        if (dist_x < 0)
+          dist_x = -dist_x;
+
+        int dist_y = squares[i].y - squares[j].y;
+        if (dist_y < 0)
+          dist_y = -dist_y;
+
+        if ((dist_x < size) && (dist_y < size))
+        {
+          squares[j].dx*= -1;
+          squares[j].dy*= -1;
+
+          /*
+          squares[j].dx*= -1;
+          squares[j].dy*= -1;
+          */
+        }
+      }
+
+    if (squares[j].x <= 0)
+      squares[j].dx = 1;
+
+    if (squares[j].x >= (int)(lcd.get_width() - size))
+      squares[j].dx = -1;
+
+    if (squares[j].y <= 0)
+      squares[j].dy = 1;
+
+    if (squares[j].y >= (int)(lcd.get_height() - size))
+      squares[j].dy = -1;
+
+    if (squares[j].x <= 0)
+      squares[j].x = 1;
+
+    if (squares[j].y <= 0)
+      squares[j].y = 1;
+
+  }
+}
 
 unsigned int CLCDDemo::julia_set_point(float ri, float re, float ci, float cr, unsigned int iterations)
 {
@@ -127,4 +229,30 @@ unsigned int CLCDDemo::julia_set_point(float ri, float re, float ci, float cr, u
   }
 
   return iterations;
+}
+
+
+
+void CLCDDemo::paint_rectangle(int y, int x,
+                                unsigned int width, unsigned int height,
+                                unsigned char r, unsigned char g, unsigned char b)
+{
+  if (y < 0)
+   y = 0;
+  if (x < 0)
+    x = 0;
+
+  for (unsigned int j = y; j < y + height; j++)
+    for (unsigned int i = x; i < x + width; i++)
+    {
+      if ((j < lcd.get_height()) && (i < lcd.get_width()))
+      {
+
+
+        unsigned int color_result = (((unsigned int)b) >> 3) | ((((unsigned int)g) >> 2) << 5) | ((((unsigned int)r) >> 3) << 11);
+        lcd.SetCursor2Draw(i, j);
+        lcd.DrawPixel(color_result);
+
+      }
+    }
 }
