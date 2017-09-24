@@ -15,6 +15,9 @@ INC = -I .
 INC+= -I ./device/CMSIS/
 INC+= -I ./device/STM32F7xx_HAL_Driver/Inc/
 
+INC_CPP+= -I ./device_cpp/
+INC_CPP+= -I ./kodama/
+
 TARGET = -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -DSTM32F746xx
 
 
@@ -31,12 +34,12 @@ OBJDUMP = $(GCCPREFIX)objdump
 SIZE = $(GCCPREFIX)size
 
 
-CCFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c99 $(INC) 
+CCFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c99 $(INC)
 CCFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual -Wno-unused-variable -Wno-unused-parameter
 CCFLAGS+= $(TARGET) -fdata-sections -ffunction-sections
 
 
-CXXFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c++11 $(INC) -fno-rtti -fno-exceptions
+CXXFLAGS = -c -O3 -Os -s -Wall -Wextra -pedantic -std=c++11 $(INC) $(INC_CPP) -fno-rtti -fno-exceptions
 CXXFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 CXXFLAGS+= $(TARGET) -fdata-sections -ffunction-sections
 

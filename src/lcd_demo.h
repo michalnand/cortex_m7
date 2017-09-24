@@ -1,24 +1,27 @@
 #ifndef _LCD_DEMO_H_
 #define _LCD_DEMO_H_
 
+#include <kodama.h>
 
-
-class CLCDDemo
+class CLCDDemo: public CTask
 {
   private:
     unsigned int transparency;
     unsigned int fractal_demo_state;
     float fractal_demo_time;
 
-
+    unsigned int time;
+    unsigned int interval;
   public:
     CLCDDemo();
     ~CLCDDemo();
 
-    void run();
+    void operator()();
 
   private:
     void show_image();
+    void show_logo();
+
     void fractal();
     void squares_demo();
 

@@ -39,17 +39,6 @@ class CLCD lcd;
 
 
 
-#define  RGB_COL_BLACK          0x0000
-#define  RGB_COL_BLUE           0x001F
-#define  RGB_COL_GREEN          0x07E0
-#define  RGB_COL_RED            0xF800
-#define  RGB_COL_WHITE          0xFFFF
-
-#define  RGB_COL_CYAN           0x07FF
-#define  RGB_COL_MAGENTA        0xF81F
-#define  RGB_COL_YELLOW         0xFFE0
-
-#define  RGB_COL_GREY           0xF7DE
 
 
 #define  LCD_MAXX           ((uint16_t)480)
@@ -258,6 +247,27 @@ void CLCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
   aktCursorPos=LCD_CurrentFrameBuffer+(2*((aktCursorY*LCD_MAXX)+aktCursorX));
 }
 
+void CLCD::SetCursor3Draw(uint16_t xpos, uint16_t ypos, uint16_t zpos)
+{
+  int16_t tmp_x = xpos - (zpos*7)/10;
+  int16_t tmp_y = ypos - (zpos*7)/10;
+
+  if (tmp_x < 0)
+    tmp_x = 0;
+
+  if (tmp_y < 0)
+    tmp_y = 0;
+
+  if (tmp_x >= (int)(get_width()-1))
+    tmp_x = get_width()-1;
+
+  if (tmp_y >= (int)(get_height()-1))
+    tmp_y = get_height()-1;
+
+  SetCursor2Draw(tmp_x, tmp_y);
+}
+
+
 
 
 void CLCD::DrawPixel(uint16_t color)
@@ -286,6 +296,12 @@ void CLCD::DrawPixel(uint16_t color)
   }
 
   aktCursorPos=LCD_CurrentFrameBuffer+(2*((aktCursorY*LCD_MAXX)+aktCursorX));
+}
+
+void CLCD::DrawPixel(uint8_t r, uint8_t g, uint8_t b)
+{
+  unsigned int tmp = (b >> 3) | ((g >> 2) << 5) | ((r >> 3) << 11);
+  lcd.DrawPixel(tmp);
 }
 
 

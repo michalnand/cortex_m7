@@ -15,6 +15,20 @@ typedef enum {
 
 extern class CLCD lcd;
 
+
+
+#define  RGB_COL_BLACK          0x0000
+#define  RGB_COL_BLUE           0x001F
+#define  RGB_COL_GREEN          0x07E0
+#define  RGB_COL_RED            0xF800
+#define  RGB_COL_WHITE          0xFFFF
+
+#define  RGB_COL_CYAN           0x07FF
+#define  RGB_COL_MAGENTA        0xF81F
+#define  RGB_COL_YELLOW         0xFFE0
+
+#define  RGB_COL_GREY           0xF7DE
+
 class CLCD
 {
   protected:
@@ -48,8 +62,12 @@ class CLCD
     void FillLayer(uint16_t color);
     void SetTransparency(uint8_t transparency);
     void SetCursor2Draw(uint16_t xpos, uint16_t ypos);
+    void SetCursor3Draw(uint16_t xpos, uint16_t ypos, uint16_t zpos);
+
 
     void DrawPixel(uint16_t color);
+    void DrawPixel(uint8_t r, uint8_t g, uint8_t b);
+
     uint16_t LCD_GetPixel();
 
     void SetMode(CLCD_MODE_t mode);

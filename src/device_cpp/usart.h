@@ -12,8 +12,10 @@ class CUSART
     CUSART();
     ~CUSART();
 
-    void putcharA(char c);
-    char getcharA();
+    void init();
+
+    void put_char(char c);
+    char get_char();
 
     unsigned int ischar();
 };
