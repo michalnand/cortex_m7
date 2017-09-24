@@ -5,13 +5,13 @@
 
 #include <kodama.h>
 #include <lcd_demo.h>
-
+#include <vl53l0x.h>
 
 class CInfoTask: public CTask
 {
   private:
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
-
+    CVL53L0X laser;
   public:
     CInfoTask();
     ~CInfoTask();
@@ -23,6 +23,7 @@ CInfoTask::CInfoTask()
 {
   terminal.printf("\n\n\n");
   terminal.printf("info task init\n");
+  laser.init();
   led = 1;
 }
 
