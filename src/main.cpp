@@ -1,11 +1,11 @@
 #include <device/core.h>
 #include "external/sdram.h"
 #include "external/lcd.h"
-#include "external/ds1307.h"
+#include "external/vl53l0x.h"
 
 #include <kodama.h>
 #include <lcd_demo.h>
-#include <vl53l0x.h>
+
 
 class CInfoTask: public CTask
 {
@@ -23,7 +23,7 @@ CInfoTask::CInfoTask()
 {
   terminal.printf("\n\n\n");
   terminal.printf("info task init\n");
-  laser.init();
+  laser.laser_init();
   led = 1;
 }
 
@@ -35,7 +35,8 @@ CInfoTask::~CInfoTask()
 void CInfoTask::operator()()
 {
   led = 1;
-  terminal.printf("uptime %u [ms]\n", timer.get_time());
+  laser.laser_read();
+  terminal.printf("uptime %u [ms], laser distance %i [mm]\n", timer.get_time(), laser.laser_get());
 
   led = 0;
 }
@@ -56,7 +57,7 @@ int main()
   lcd.init();
 
   class CInfoTask info_task;
-  timer.add_task(&info_task, 10);   //period 10ms
+  timer.add_task(&info_task, 500);   //period 500ms
 
 
   class CLCDDemo lcd_demo;
