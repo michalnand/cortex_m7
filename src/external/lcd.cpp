@@ -43,14 +43,16 @@ class CLCD lcd;
 
 #define  LCD_MAXX           ((uint16_t)480)
 #define  LCD_MAXY           ((uint16_t)272)
-#define  LCD_PIXEL  LCD_MAXX*LCD_MAXY
+#define  LCD_PIXEL          LCD_MAXX*LCD_MAXY
 
 #define  LCD_INIT_PAUSE   16600 //  1ms
 
 
 
-
+/*
 #define  LCD_FRAME_BUFFER    ((uint32_t)0xC0000000)
+*/
+
 #define  LCD_FRAME_OFFSET   ((uint32_t)(LCD_PIXEL*2))
 
 
@@ -70,8 +72,9 @@ CLCD::~CLCD()
 
 }
 
-void CLCD::init()
+void CLCD::init(uint32_t *frame_buffer_address)
 {
+  frame_buffer = (uint32_t)frame_buffer_address;
   // beim init auf Landscape-Mode
   LCD_DISPLAY_MODE=LANDSCAPE;
   // init vom SDRAM
@@ -82,7 +85,7 @@ void CLCD::init()
   aktCursorY = 0;
   aktCursorPos = 0;
 
-  LCD_CurrentFrameBuffer  = LCD_FRAME_BUFFER;
+  LCD_CurrentFrameBuffer  = frame_buffer;
   LCD_CurrentLayer = 0;
   LCD_CurrentOrientation=0;
 
@@ -165,7 +168,7 @@ void CLCD::LayerInit_Fullscreen()
   layer_cfg.WindowY0 = 0;
   layer_cfg.WindowY1 = LCD_MAXY;
   layer_cfg.PixelFormat = LTDC_PIXEL_FORMAT_RGB565;
-  layer_cfg.FBStartAdress = LCD_FRAME_BUFFER;
+  layer_cfg.FBStartAdress = frame_buffer;
   layer_cfg.Alpha = 255;
   layer_cfg.Alpha0 = 0;
   layer_cfg.Backcolor.Blue = 0;
@@ -183,7 +186,7 @@ void CLCD::LayerInit_Fullscreen()
   layer_cfg.WindowY0 = 0;
   layer_cfg.WindowY1 = LCD_MAXY;
   layer_cfg.PixelFormat = LTDC_PIXEL_FORMAT_RGB565;
-  layer_cfg.FBStartAdress = LCD_FRAME_BUFFER+LCD_FRAME_OFFSET;
+  layer_cfg.FBStartAdress = frame_buffer+LCD_FRAME_OFFSET;
   layer_cfg.Alpha = 255;
   layer_cfg.Alpha0 = 0;
   layer_cfg.Backcolor.Blue = 0;
@@ -199,7 +202,7 @@ void CLCD::LayerInit_Fullscreen()
 
 void CLCD::SetLayer_1()
 {
-  LCD_CurrentFrameBuffer = LCD_FRAME_BUFFER;
+  LCD_CurrentFrameBuffer = frame_buffer;
   LCD_CurrentLayer = 0;
 }
 
@@ -207,7 +210,7 @@ void CLCD::SetLayer_1()
 
 void CLCD::SetLayer_2()
 {
-  LCD_CurrentFrameBuffer = LCD_FRAME_BUFFER + LCD_FRAME_OFFSET;
+  LCD_CurrentFrameBuffer = frame_buffer + LCD_FRAME_OFFSET;
   LCD_CurrentLayer = 1;
 }
 
@@ -455,8 +458,8 @@ void CLCD::Rotate_180()
 void CLCD::Copy_Layer1_to_Layer2()
 {
   uint32_t index;
-  uint32_t input = LCD_FRAME_BUFFER;
-  uint32_t output = LCD_FRAME_BUFFER + LCD_FRAME_OFFSET;
+  uint32_t input = frame_buffer;
+  uint32_t output = frame_buffer + LCD_FRAME_OFFSET;
 
   for (index = 0 ; index < LCD_FRAME_OFFSET;index+=2)
   {
@@ -469,8 +472,8 @@ void CLCD::Copy_Layer1_to_Layer2()
 void CLCD::Copy_Layer2_to_Layer1()
 {
   uint32_t index;
-  uint32_t input = LCD_FRAME_BUFFER + LCD_FRAME_OFFSET;
-  uint32_t output = LCD_FRAME_BUFFER;
+  uint32_t input = frame_buffer + LCD_FRAME_OFFSET;
+  uint32_t output = frame_buffer;
 
   for (index = 0 ; index < LCD_FRAME_OFFSET;index+=2)
   {

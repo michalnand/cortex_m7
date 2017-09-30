@@ -2,6 +2,8 @@
 #include "external/sdram.h"
 #include "external/lcd.h"
 #include "external/vl53l0x.h"
+#include "external/camera/ov9655.h"
+
 
 #include <kodama.h>
 #include <lcd_demo.h>
@@ -12,6 +14,7 @@ class CInfoTask: public CTask
   private:
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
     CVL53L0X laser;
+
   public:
     CInfoTask();
     ~CInfoTask();
@@ -54,7 +57,8 @@ int main()
   timer.init();
 
   sdram.init();
-  lcd.init();
+  uint32_t *frame_buffer = sdram.get_start_address();
+  lcd.init(frame_buffer);
 
   class CInfoTask info_task;
   timer.add_task(&info_task, 500);   //period 500ms

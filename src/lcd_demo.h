@@ -3,6 +3,9 @@
 
 #include <kodama.h>
 
+#include "external/camera/ov9655.h"
+
+
 class CLCDDemo: public CTask
 {
   private:
@@ -12,6 +15,9 @@ class CLCDDemo: public CTask
 
     unsigned int time;
     unsigned int interval;
+
+    class COV9655 camera;
+
   public:
     CLCDDemo();
     ~CLCDDemo();

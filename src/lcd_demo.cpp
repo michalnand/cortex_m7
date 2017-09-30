@@ -1,11 +1,10 @@
 #include "lcd_demo.h"
 
-
+#include "external/sdram.h"
 #include "external/lcd.h"
+
 #include "image.cimg"   //include image from gimp, as C array
 #include "cpp_logo.cimg"   //include image from gimp, as C array
-
-#include "external/camera/stm32746g_discovery_camera.h"
 
 unsigned int __rnd__ = 1;
 
@@ -58,9 +57,15 @@ CLCDDemo::CLCDDemo()
     squares[j].b = rnd()%256;
   }
 
-//  BSP_CAMERA_Init(RESOLUTION_R480x272);
-//  BSP_CAMERA_ContinuousStart((uint32_t*)0xC0000000);
-//  BSP_CAMERA_SnapshotStart((uint32_t*)0xC0000000);
+  int camera_init_res = camera.init();
+
+  if (camera_init_res != 0)
+  {
+    while (1)
+      __asm("nop");
+  }
+
+  camera.stream_start(sdram.get_start_address());
 }
 
 CLCDDemo::~CLCDDemo()
@@ -68,84 +73,10 @@ CLCDDemo::~CLCDDemo()
 
 }
 
-int x_points[256];
-int y_points[256];
-
 
 void CLCDDemo::operator()()
 {
-  lcd.FillLayer(RGB_COL_BLACK);
-
 /*
-  for (unsigned int i = 0; i < 1000; i++)
-  {
-    int xs = rnd()%lcd.get_width();
-    int ys = rnd()%lcd.get_height();
-    int xe = rnd()%lcd.get_width();
-    int ye = rnd()%lcd.get_height();
-
-    unsigned char r = rnd();
-    unsigned char g = rnd();
-    unsigned char b = rnd();
-    lcd.DrawLine(xs, ys, xe, ye, r, g, b);
-  }
-*/
-
-/*
-  int xc = rnd()%lcd.get_width();
-  int yc = rnd()%lcd.get_height();
-
-
-  float radius = 80.0;
-  for (float x = -radius; x <= radius; x++)
-  {
-    float y = fm.sqrt(radius*radius - x*x);
-    lcd.DrawLine(xc, yc, xc + x, yc + y, 255, 0, 0);
-    lcd.DrawLine(xc, yc, xc + x, yc - y, 0, 255, 0);
-  }
-
-*/
-int radius = 100;
-
-  int x_max = radius*2;
-
-  struct sGraph graph;
-
-  graph.r = 255;
-  graph.g = 255;
-  graph.b = 255;
-
-  graph.points_count = x_max;
-  graph.x_points = x_points;
-  graph.y_points = y_points;
-
-
-
-  for (unsigned int i = 0; i <= radius; i++)
-  {
-    int x = 2*(int)i - radius;
-    int y = fm.sqrt(radius*radius - x*x);
-
-    graph.x_points[i + 0] = x;
-    graph.y_points[i + 0] = y;
-  }
-
-
-  for (unsigned int i = 0; i <= radius; i++)
-  {
-    int x = 2*(int)i - radius;
-    int y = fm.sqrt(radius*radius - x*x);
-
-    graph.x_points[i + radius] = x;
-    graph.y_points[i + radius] = -y;
-  }
-
-
-  lcd.PlotGraph(graph);
-
-  lcd.Refresh();
-/*
-
   if (time < 100)
     show_logo();
   else
@@ -156,10 +87,9 @@ int radius = 100;
       squares_demo();
     else
       fractal();
-  }*/
+  }
+  */
   time++;
-
-
 }
 
 void CLCDDemo::show_image()

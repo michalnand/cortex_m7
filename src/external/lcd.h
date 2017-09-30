@@ -55,12 +55,13 @@ class CLCD
 
     LTDC_HandleTypeDef  hLtdcHandler;
 
-
+    uint32_t frame_buffer;
+    
   public:
     CLCD();
     ~CLCD();
 
-    void init();
+    void init(uint32_t *frame_buffer_address);
 
     uint32_t get_width();
     uint32_t get_height();

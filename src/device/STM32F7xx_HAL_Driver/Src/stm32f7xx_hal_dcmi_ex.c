@@ -170,7 +170,7 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
 
   /* Enable DCMI by setting DCMIEN bit */
   __HAL_DCMI_ENABLE(hdcmi);
-
+ 
   /* Update error code */
   hdcmi->ErrorCode = HAL_DCMI_ERROR_NONE;
 
