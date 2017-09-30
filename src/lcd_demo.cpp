@@ -66,6 +66,7 @@ CLCDDemo::CLCDDemo()
   }
 
   camera.stream_start(sdram.get_start_address());
+  lcd.Rotate_180();
 }
 
 CLCDDemo::~CLCDDemo()
