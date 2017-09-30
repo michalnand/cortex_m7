@@ -4,7 +4,7 @@
 
 #include "stm32f7xx.h"
 #include "stm32f7xx_hal.h"
-
+#include <fast_math.h>
 //--------------------------------------------------------------
 // Display Mode
 //--------------------------------------------------------------
@@ -28,6 +28,15 @@ extern class CLCD lcd;
 #define  RGB_COL_YELLOW         0xFFE0
 
 #define  RGB_COL_GREY           0xF7DE
+
+struct sGraph
+{
+  unsigned char r,g,b;
+  unsigned int points_count;
+
+  int *x_points;
+  int *y_points;
+};
 
 class CLCD
 {
@@ -68,6 +77,13 @@ class CLCD
     void DrawPixel(uint16_t color);
     void DrawPixel(uint8_t r, uint8_t g, uint8_t b);
 
+    void DrawPixel(int xpos, int ypos, uint8_t r, uint8_t g, uint8_t b);
+    void DrawLine(int xpos_start, int ypos_start,
+                  int xpos_end, int ypos_end,
+                  uint8_t r, uint8_t g, uint8_t b);
+
+    void PlotGraph(struct sGraph graph);
+
     uint16_t LCD_GetPixel();
 
     void SetMode(CLCD_MODE_t mode);
@@ -84,6 +100,8 @@ class CLCD
     void lcd_480x272_init();
     void lcd_480x272_ClockConfig();
     void lcd_480x272_MspInit();
+    void swap(int* a,int* b);
+    int map(int source_min, int source_max, int dest_min, int dest_max, int value);
 
 };
 

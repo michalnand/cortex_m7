@@ -238,9 +238,13 @@ void CLCD::SetTransparency(uint8_t transparency)
 }
 
 
-
 void CLCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
 {
+  if (xpos > get_width()-1)
+    xpos = get_width()-1;
+
+  if (ypos > get_height()-1)
+    ypos = get_height()-1;
   aktCursorX=xpos;
   aktCursorY=ypos;
 
@@ -304,6 +308,114 @@ void CLCD::DrawPixel(uint8_t r, uint8_t g, uint8_t b)
   lcd.DrawPixel(tmp);
 }
 
+void CLCD::DrawPixel(int xpos, int ypos, uint8_t r, uint8_t g, uint8_t b)
+{
+  unsigned int tmp = (b >> 3) | ((g >> 2) << 5) | ((r >> 3) << 11);
+
+  SetCursor2Draw(xpos, ypos);
+  DrawPixel(tmp);
+}
+
+void CLCD::swap(int* a,int* b)
+{
+	int t=*a;
+	*a=*b;
+	*b=t;
+}
+
+void CLCD::DrawLine(int xpos_start, int ypos_start,
+                    int xpos_end, int ypos_end,
+                    uint8_t r, uint8_t g, uint8_t b)
+{
+  int dx, dy;
+  int d, incry, incre, incrne;
+  int slopegt1=0;
+
+  dx = xpos_start - xpos_end;
+  if (dx < 0)
+    dx = -dx;
+
+  dy = ypos_start-ypos_end;
+  if (dy < 0)
+    dy = -dy;
+
+  if(dy > dx)
+  {
+  	swap(&xpos_start,&ypos_start);
+  	swap(&xpos_end,&ypos_end);
+  	swap(&dx,&dy);
+  	slopegt1=1;
+  }
+
+  if(xpos_start > xpos_end)
+  {
+  	swap(&xpos_start,&xpos_end);
+  	swap(&ypos_start,&ypos_end);
+  }
+  if(ypos_start>ypos_end)
+  	incry=-1;
+  else
+  	incry=1;
+
+  d=2*dy-dx;
+  incre=2*dy;
+  incrne=2*(dy-dx);
+
+  while(xpos_start < xpos_end)
+  {
+  	if(d<=0)
+  		d+=incre;
+  	else
+  	{
+  		d+=incrne;
+  		ypos_start+=incry;
+  	}
+  	xpos_start++;
+
+  	if(slopegt1)
+  		SetCursor2Draw(ypos_start, xpos_start);
+  	else
+  		SetCursor2Draw(xpos_start, ypos_start);
+
+    DrawPixel(r, g, b);
+  }
+}
+
+void CLCD::PlotGraph(struct sGraph graph)
+{
+  int x_max = graph.x_points[0];
+  int x_min = graph.x_points[0];
+
+  int y_max = graph.y_points[0];
+  int y_min = graph.y_points[0];
+
+  for (unsigned int i = 0; i < graph.points_count; i++)
+  {
+    if (graph.x_points[i] > x_max)
+      x_max = graph.x_points[i];
+    if (graph.x_points[i] < x_min)
+      x_min = graph.x_points[i];
+
+    if (graph.y_points[i] > y_max)
+      y_max = graph.y_points[i];
+    if (graph.y_points[i] < y_min)
+      y_min = graph.y_points[i];
+  }
+
+  int xs = map(x_min, x_max, 0, get_width(), graph.x_points[0]);
+  int ys = map(y_min, y_max, 0, get_height(), graph.y_points[0]);
+
+  for (unsigned int i = 1; i < graph.points_count; i++)
+  {
+    int x = map(x_min, x_max, 0, get_width(), graph.x_points[i]);
+    int y = map(y_min, y_max, 0, get_height(), graph.y_points[i]);
+
+    DrawLine(xs, ys, x, y, graph.r, graph.g, graph.b);
+    xs = x;
+    ys = y;
+    //DrawPixel(x, y, graph.r, graph.g, graph.b);
+  }
+}
 
 uint16_t CLCD::LCD_GetPixel()
 {
@@ -383,7 +495,18 @@ void CLCD::Refresh()
 }
 
 
+int CLCD::map(int source_min, int source_max, int dest_min, int dest_max, int value)
+{
+  int result = 0;
 
+  if (source_max != source_min)
+  {
+    result+= ((dest_max - dest_min)*value)/(source_max - source_min);
+    result+= dest_max - ((dest_max - dest_min)*source_max)/(source_max - source_min);
+  }
+
+  return result;
+}
 
 
 

@@ -37,7 +37,7 @@ class CI2C_Interface
     virtual void read_reg_multi(unsigned char dev_adr, unsigned char reg_adr, unsigned char *data, unsigned int count)  = 0;
 };
 
-template <unsigned char port_name, unsigned char sda_pin, unsigned char scl_pin, unsigned char bus_speed = 5, unsigned char scl_port_name = port_name> class TI2C // : public CI2C_Interface
+template <unsigned char port_name, unsigned char sda_pin, unsigned char scl_pin, unsigned int bus_speed = 5, unsigned char scl_port_name = port_name> class TI2C // : public CI2C_Interface
 {
   private:
     TGpio<port_name, sda_pin, GPIO_MODE_IN_FLOATING> sda;

@@ -306,7 +306,7 @@ void Reset_Handler(void)
 
     while (sdata != edata)
     {
-      *sdata = *sidata;  
+      *sdata = *sidata;
       sidata++;
       sdata++;
     }
