@@ -38,6 +38,8 @@ struct sGraph
   int *y_points;
 };
 
+
+
 class CLCD
 {
   protected:
@@ -56,7 +58,7 @@ class CLCD
     LTDC_HandleTypeDef  hLtdcHandler;
 
     uint32_t frame_buffer;
-    
+
   public:
     CLCD();
     ~CLCD();
@@ -95,7 +97,6 @@ class CLCD
     void Copy_Layer2_to_Layer1();
 
     void Refresh();
-
 
   private:
     void lcd_480x272_init();

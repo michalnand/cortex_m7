@@ -1,20 +1,11 @@
-#include "ov9655.h"
+#include "camera.h"
 
 DCMI_HandleTypeDef camera_dcmi;
 DMA_HandleTypeDef camera_hdma_handler;
 volatile uint32_t camera_refresh = 0;
 
-/*
-#define CAMERA_480x272_RES_X      480
-#define CAMERA_480x272_RES_Y      272
-#define CAMERA_QVGA_RES_X         320
-#define CAMERA_QVGA_RES_Y         240
-*/
-
 #define CAMERA_QQVGA_RES_X        160
 #define CAMERA_QQVGA_RES_Y        120
-
-
 
 #define CAMERA_VGA_RES_X          640
 #define CAMERA_VGA_RES_Y          480
@@ -366,17 +357,17 @@ const unsigned char OV9655_VGA[][2]=
 
 
 
-COV9655::COV9655()
+CCamera::CCamera()
 {
 
 }
 
-COV9655::~COV9655()
+CCamera::~CCamera()
 {
 
 }
 
-int COV9655::init()
+int CCamera::init()
 {
   camera_refresh = 0;
   res_x = 0;
@@ -435,13 +426,13 @@ HAL_DCMI_EnableCROP(&camera_dcmi);
 }
 
 
-void COV9655::delay_loops(unsigned int loops)
+void CCamera::delay_loops(unsigned int loops)
 {
   while (loops--)
     __asm("nop");
 }
 
-void COV9655::MspInit()
+void CCamera::MspInit()
 {
   GPIO_InitTypeDef gpio_init_structure;
 
@@ -531,19 +522,19 @@ void COV9655::MspInit()
   HAL_DMA_Init(camera_dcmi.DMA_Handle);
 }
 
-void COV9655::stream_start(uint32_t *buffer)
+void CCamera::stream_start(uint32_t *buffer)
 {
   uint32_t size =  get_res_x()*get_res_y();
   HAL_DCMI_Start_DMA(&camera_dcmi, DCMI_MODE_CONTINUOUS, (uint32_t)buffer, size);
 }
 
-void COV9655::snapshot_start(uint32_t *buffer)
+void CCamera::snapshot_start(uint32_t *buffer)
 {
   uint32_t size =  get_res_x()*get_res_y();
   HAL_DCMI_Start_DMA(&camera_dcmi, DCMI_MODE_SNAPSHOT, (uint32_t)buffer, size);
 }
 
-uint32_t COV9655::need_refresh()
+uint32_t CCamera::need_refresh()
 {
   if (camera_refresh)
   {
@@ -554,38 +545,38 @@ uint32_t COV9655::need_refresh()
   return 0;
 }
 
-uint32_t COV9655::get_res_x()
+uint32_t CCamera::get_res_x()
 {
   return res_x;
 }
 
-uint32_t COV9655::get_res_y()
+uint32_t CCamera::get_res_y()
 {
   return res_y;
 }
 
-void COV9655::send_init_sequence_qqvga()
+void CCamera::send_init_sequence_qqvga()
 {
   i2c_dcmi.write_reg(OV9655_I2C_ADDRESS, OV9655_SENSOR_COM7, 0x80);
 
-  delay_loops(200000);
+  delay_loops(20000);
 
   for(unsigned int i = 0; i < (sizeof(OV9655_QQVGA)/2); i++)
   {
     i2c_dcmi.write_reg(OV9655_I2C_ADDRESS, OV9655_QQVGA[i][0], OV9655_QQVGA[i][1]);
-    delay_loops(2000);
+//    delay_loops(2000);
   }
 }
 
-void COV9655::send_init_sequence_vga()
+void CCamera::send_init_sequence_vga()
 {
   i2c_dcmi.write_reg(OV9655_I2C_ADDRESS, OV9655_SENSOR_COM7, 0x80);
 
-  delay_loops(200000);
+  delay_loops(20000);
 
   for(unsigned int i = 0; i < (sizeof(OV9655_VGA)/2); i++)
   {
     i2c_dcmi.write_reg(OV9655_I2C_ADDRESS, OV9655_VGA[i][0], OV9655_VGA[i][1]);
-    delay_loops(2000);
+//    delay_loops(2000);
   }
 }

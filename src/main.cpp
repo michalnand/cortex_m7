@@ -2,7 +2,6 @@
 #include "external/sdram.h"
 #include "external/lcd.h"
 #include "external/vl53l0x.h"
-#include "external/camera/ov9655.h"
 
 
 #include <kodama.h>

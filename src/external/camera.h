@@ -1,5 +1,5 @@
-#ifndef _OV9655_H_
-#define _OV9655_H_
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
 
 
 #include <kodama.h>
@@ -7,8 +7,6 @@
 #define DCIM_I2C_GPIO         TGPIOB
 #define DCIM_I2C_SDA          9
 #define DCIM_I2C_SCL          8
-
-
 
 #define  OV9655_I2C_ADDRESS             ((uint8_t)0x60)
 #define  OV9655_ID                       0x96
@@ -53,16 +51,16 @@
 #define OV9655_COLOR_EFFECT_RED         0xCC600000000000  /* Red effect                  */
 
 
-class COV9655
+class CCamera
 {
   protected:
     class TGpio<TGPIOH, 13, GPIO_MODE_OUT> dcmi_pwr_en;                   //PH13 power enable
-    class TI2C<DCIM_I2C_GPIO, DCIM_I2C_SDA, DCIM_I2C_SCL, 200> i2c_dcmi;  //i2c bus for camera control
+    class TI2C<DCIM_I2C_GPIO, DCIM_I2C_SDA, DCIM_I2C_SCL, 100> i2c_dcmi;  //i2c bus for camera control
 
     uint32_t res_x, res_y;
   public:
-    COV9655();
-    ~COV9655();
+    CCamera();
+    ~CCamera();
 
     int init();
     void stream_start(uint32_t *buffer);

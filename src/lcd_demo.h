@@ -3,8 +3,8 @@
 
 #include <kodama.h>
 
-#include "external/camera/ov9655.h"
-
+#include "external/camera.h"
+#include "convolution_2d.h"
 
 class CLCDDemo: public CTask
 {
@@ -16,7 +16,13 @@ class CLCDDemo: public CTask
     unsigned int time;
     unsigned int interval;
 
-    class COV9655 camera;
+    class CCamera camera;
+    class CConvolution2D convolution;
+
+    uint32_t *camera_address;
+
+    TGpio<TGPIOI, 11, GPIO_MODE_IN_FLOATING> key;
+
 
   public:
     CLCDDemo();

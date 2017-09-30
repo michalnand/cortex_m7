@@ -65,8 +65,8 @@ CLCDDemo::CLCDDemo()
       __asm("nop");
   }
 
-  camera.stream_start(sdram.get_start_address());
-  lcd.Rotate_180();
+  camera_address = sdram.get_start_address() + 640*480*4;
+  camera.stream_start(camera_address);
 }
 
 CLCDDemo::~CLCDDemo()
@@ -77,6 +77,26 @@ CLCDDemo::~CLCDDemo()
 
 void CLCDDemo::operator()()
 {
+  lcd.Refresh();
+
+  for (unsigned int y = 0; y < lcd.get_height()-KERNEL_SIZE; y++)
+    for (unsigned int x = 0; x < lcd.get_width()-KERNEL_SIZE; x++)
+    {
+
+      convolution.prepare(camera_address,
+                          y, x,
+                          camera.get_res_y(), camera.get_res_x(),
+                          KERNEL_SIZE);
+
+      int conv_res = 0;
+      if (key != 0)
+        conv_res = convolution.process(w_edges);
+      else
+        conv_res = convolution.process(w_identity);
+
+
+      lcd.DrawPixel(x, y, conv_res, conv_res, conv_res);
+    }
 /*
   if (time < 100)
     show_logo();
