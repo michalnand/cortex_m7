@@ -65,8 +65,13 @@ CLCDDemo::CLCDDemo()
       __asm("nop");
   }
 
-  camera_address = sdram.get_start_address() + 640*480*4;
-  camera.stream_start(camera_address);
+  lcd.FillLayer(RGB_COL_BLACK);
+
+  unsigned int size = (camera.get_res_y()*camera.get_res_x()*sizeof(uint16_t))/sizeof(uint32_t);
+  camera_buffer = sdram.allocate(size);
+
+  terminal.printf("camera buffer start %u \n", (unsigned int)camera_buffer);
+  camera.stream_start(camera_buffer);
 }
 
 CLCDDemo::~CLCDDemo()
@@ -74,29 +79,43 @@ CLCDDemo::~CLCDDemo()
 
 }
 
+void CLCDDemo::process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs)
+{
+  for (unsigned int y = 0; y < camera.get_res_y()-KERNEL_SIZE; y++)
+    for (unsigned int x = 0; x < camera.get_res_x()-KERNEL_SIZE; x++)
+    {
+        convolution.prepare(camera_buffer,
+                            y, x,
+                            camera.get_res_y(), camera.get_res_x(),
+                            KERNEL_SIZE);
+
+
+        int conv_res = convolution.process(w);
+        lcd.DrawPixel(x + x_ofs, y + y_ofs, conv_res, conv_res, conv_res);
+      }
+}
 
 void CLCDDemo::operator()()
 {
-  lcd.Refresh();
+  unsigned int time_start = timer.get_time();
+   lcd.Refresh();
 
-  for (unsigned int y = 0; y < lcd.get_height()-KERNEL_SIZE; y++)
-    for (unsigned int x = 0; x < lcd.get_width()-KERNEL_SIZE; x++)
-    {
-
-      convolution.prepare(camera_address,
-                          y, x,
-                          camera.get_res_y(), camera.get_res_x(),
-                          KERNEL_SIZE);
-
-      int conv_res = 0;
-      if (key != 0)
-        conv_res = convolution.process(w_edges);
-      else
-        conv_res = convolution.process(w_identity);
+   unsigned int size_y = camera.get_res_y();
+   unsigned int size_x = camera.get_res_x();
 
 
-      lcd.DrawPixel(x, y, conv_res, conv_res, conv_res);
-    }
+   process_filter(w_identity, 0*size_y, 0*size_x);
+   process_filter(w_sobel_v, 0*size_y, 1*size_x);
+   process_filter(w_sobel_h, 0*size_y, 2*size_x);
+   process_filter(w_edges, 1*size_y, 0*size_x);
+   process_filter(w_sharp, 1*size_y, 1*size_x);
+   process_filter(w_cross, 1*size_y, 2*size_x);
+
+
+   unsigned int time_stop = timer.get_time();
+
+   terminal.printf("FPS %u\n", 1000/(time_stop - time_start) );
+
 /*
   if (time < 100)
     show_logo();

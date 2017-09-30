@@ -13,7 +13,7 @@ class CInfoTask: public CTask
   private:
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
     CVL53L0X laser;
-
+ 
   public:
     CInfoTask();
     ~CInfoTask();
@@ -56,8 +56,11 @@ int main()
   timer.init();
 
   sdram.init();
-  uint32_t *frame_buffer = sdram.get_start_address();
+  unsigned int frame_buffer_size = (lcd.get_width()*lcd.get_height()*2*sizeof(uint16_t))/sizeof(uint32_t);
+  uint32_t *frame_buffer = sdram.allocate(frame_buffer_size);
   lcd.init(frame_buffer);
+
+  terminal.printf("frame buffer start %u\n", (unsigned int)frame_buffer);
 
   class CInfoTask info_task;
   timer.add_task(&info_task, 500);   //period 500ms

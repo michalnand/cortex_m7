@@ -8,6 +8,20 @@ int w_identity[KERNEL_SIZE*KERNEL_SIZE] =
   0, 0, 0
 };
 
+int w_sobel_v[KERNEL_SIZE*KERNEL_SIZE] =
+{
+  1, 0, -1,
+  2, 0, -2,
+  1, 0, -1
+};
+
+int w_sobel_h[KERNEL_SIZE*KERNEL_SIZE] =
+{
+  1,  2,  1,
+  0,  0,  0,
+ -1, -2, -1
+};
+
 int w_edges[KERNEL_SIZE*KERNEL_SIZE] =
 {
   -1, -1, -1,
@@ -22,6 +36,16 @@ int w_sharp[KERNEL_SIZE*KERNEL_SIZE] =
   -1, 5, -1,
   0, -1, 0
 };
+
+
+int w_cross[KERNEL_SIZE*KERNEL_SIZE] =
+{
+  -1, 1, -1,
+  1,  0, 1,
+  -1, 1, -1
+};
+
+
 
 CConvolution2D::CConvolution2D()
 {

@@ -70,6 +70,7 @@ class CSDRam sdram;
 //--------------------------------------------------------------
 
 
+
 CSDRam::CSDRam()
 {
 
@@ -116,6 +117,11 @@ unsigned int CSDRam::init(bool full_test)
       result = 1;
   }
 
+  for (unsigned int i = 0; i < get_size(); i+= 4)
+    Write32b(i, 0);
+
+  sd_mem_ptr = get_start_address();
+
   return result;
 }
 
@@ -127,6 +133,15 @@ uint32_t* CSDRam::get_start_address()
 uint32_t CSDRam::get_size()
 {
   return SDRAM_MAX_ADR;
+}
+
+
+uint32_t* CSDRam::allocate(unsigned int size)
+{
+  uint32_t *result = sd_mem_ptr;
+  sd_mem_ptr+= size;
+
+  return result;
 }
 
 

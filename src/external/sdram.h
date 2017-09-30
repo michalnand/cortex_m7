@@ -15,6 +15,8 @@ class CSDRam
     FMC_SDRAM_TimingTypeDef Timing;
     FMC_SDRAM_CommandTypeDef Command;
 
+    uint32_t *sd_mem_ptr;
+
   public:
     CSDRam();
     ~CSDRam();
@@ -23,6 +25,9 @@ class CSDRam
 
     uint32_t* get_start_address();
     uint32_t get_size();
+
+    uint32_t* allocate(unsigned int size);
+
 
     void Write8b(uint32_t adr, uint8_t value);
     uint8_t Read8b(uint32_t adr);

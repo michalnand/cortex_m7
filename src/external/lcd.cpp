@@ -92,9 +92,9 @@ void CLCD::init(uint32_t *frame_buffer_address)
 
   LayerInit_Fullscreen();
   SetLayer_1();
-  FillLayer(RGB_COL_WHITE);
+  FillLayer(RGB_COL_BLACK);
   SetLayer_2();
-  FillLayer(RGB_COL_WHITE);
+  FillLayer(RGB_COL_BLACK);
 
   SetLayer_1();
 }

@@ -19,7 +19,7 @@ class CLCDDemo: public CTask
     class CCamera camera;
     class CConvolution2D convolution;
 
-    uint32_t *camera_address;
+    uint32_t *camera_buffer;
 
     TGpio<TGPIOI, 11, GPIO_MODE_IN_FLOATING> key;
 
@@ -31,6 +31,8 @@ class CLCDDemo: public CTask
     void operator()();
 
   private:
+    void process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs);
+
     void show_image();
     void show_logo();
 

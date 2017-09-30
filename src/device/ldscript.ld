@@ -114,7 +114,7 @@ SECTIONS
   _sidata = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data : 
+  .data :
   {
     . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
@@ -125,7 +125,7 @@ SECTIONS
     _edata = .;        /* define a global symbol at data end */
   } >RAM AT> FLASH
 
-  
+
   /* Uninitialized data section */
   . = ALIGN(4);
   .bss :
@@ -140,6 +140,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
+    __heap_start__ = .;
   } >RAM
 
   /* User_heap_stack section, used to check that there is enough RAM left */
@@ -153,7 +154,7 @@ SECTIONS
     . = ALIGN(4);
   } >RAM
 
-  
+
 
   /* Remove information from the standard libraries */
   /DISCARD/ :
@@ -165,5 +166,3 @@ SECTIONS
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
-
-

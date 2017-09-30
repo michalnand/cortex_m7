@@ -400,14 +400,14 @@ int CCamera::init()
 
 
  // 160x120 QQVGA resolution
-/*
+
  res_x = CAMERA_QQVGA_RES_X;
  res_y = CAMERA_QQVGA_RES_Y;
  send_init_sequence_qqvga();
  HAL_DCMI_DisableCROP(&camera_dcmi);
-*/
 
 
+/*
  // For 480x272 resolution, the OV9655 sensor is set to VGA resolution
  // as OV9655 doesn't supports 480x272 resolution,
 // then DCMI is configured to output a 480x272 cropped window
@@ -421,7 +421,7 @@ HAL_DCMI_ConfigCROP(&camera_dcmi,           // Crop in the middle of the VGA pic
                     (res_x * 2) - 1,
                      res_y - 1);
 HAL_DCMI_EnableCROP(&camera_dcmi);
-
+*/
  return 0;
 }
 

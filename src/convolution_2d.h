@@ -6,8 +6,11 @@
 #define KERNEL_SIZE   3
 
 extern int w_identity[KERNEL_SIZE*KERNEL_SIZE];
+extern int w_sobel_v[KERNEL_SIZE*KERNEL_SIZE];
+extern int w_sobel_h[KERNEL_SIZE*KERNEL_SIZE];
 extern int w_edges[KERNEL_SIZE*KERNEL_SIZE];
 extern int w_sharp[KERNEL_SIZE*KERNEL_SIZE];
+extern int w_cross[KERNEL_SIZE*KERNEL_SIZE];
 
 
 
