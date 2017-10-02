@@ -5,6 +5,7 @@
 #include "stm32f7xx.h"
 #include "stm32f7xx_hal.h"
 #include <fast_math.h>
+
 //--------------------------------------------------------------
 // Display Mode
 //--------------------------------------------------------------
@@ -58,6 +59,7 @@ class CLCD
     LTDC_HandleTypeDef  hLtdcHandler;
 
     uint32_t frame_buffer;
+
 
   public:
     CLCD();

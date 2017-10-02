@@ -1,5 +1,5 @@
-#ifndef _GPIO_H_
-#define _GPIO_H_
+#ifndef _T_GPIO_H_
+#define _T_GPIO_H_
 
 #include <kodama.h>
 
@@ -20,6 +20,8 @@
 #define TGPIOG    ((unsigned char)6)
 #define TGPIOH    ((unsigned char)7)
 #define TGPIOI    ((unsigned char)8)
+#define TGPIOJ    ((unsigned char)9)
+#define TGPIOK    ((unsigned char)10)
 
 
 template <const unsigned char gpio, unsigned char pin, unsigned char mode = GPIO_MODE_OUT> class TGpio
@@ -40,6 +42,9 @@ template <const unsigned char gpio, unsigned char pin, unsigned char mode = GPIO
       __GPIOG_CLK_ENABLE();
       __GPIOH_CLK_ENABLE();
       __GPIOI_CLK_ENABLE();
+      __GPIOJ_CLK_ENABLE();
+      __GPIOK_CLK_ENABLE();
+
 
       if (gpio == TGPIOA)
         GPIOx = GPIOA;
@@ -67,6 +72,12 @@ template <const unsigned char gpio, unsigned char pin, unsigned char mode = GPIO
 
       if (gpio == TGPIOI)
         GPIOx = GPIOI;
+
+      if (gpio == TGPIOJ)
+        GPIOx = GPIOJ;
+
+      if (gpio == TGPIOK)
+        GPIOx = GPIOK;
 
       set_mode(mode);
     }

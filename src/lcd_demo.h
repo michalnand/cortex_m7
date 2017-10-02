@@ -22,7 +22,7 @@ class CLCDDemo: public CTask
     uint32_t *camera_buffer;
 
     TGpio<TGPIOI, 11, GPIO_MODE_IN_FLOATING> key;
-
+    TGpio<TGPIOK, 3, GPIO_MODE_OUT> back_light;
 
   public:
     CLCDDemo();

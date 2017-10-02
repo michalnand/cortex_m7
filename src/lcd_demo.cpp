@@ -32,6 +32,7 @@ CLCDDemo::CLCDDemo()
   transparency = 0;
   fractal_demo_state = 0;
   fractal_demo_time = 0;
+  back_light = 1;
 
   time = 0;
   interval = 1000;

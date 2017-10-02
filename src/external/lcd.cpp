@@ -1,7 +1,7 @@
 #include "lcd.h"
 
-
 class CLCD lcd;
+
 
 
 #define   USE_SYNC_GPIO    1
