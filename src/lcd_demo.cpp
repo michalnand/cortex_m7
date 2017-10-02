@@ -85,15 +85,14 @@ void CLCDDemo::process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs)
   for (unsigned int y = 0; y < camera.get_res_y()-KERNEL_SIZE; y++)
     for (unsigned int x = 0; x < camera.get_res_x()-KERNEL_SIZE; x++)
     {
-        convolution.prepare(camera_buffer,
-                            y, x,
-                            camera.get_res_y(), camera.get_res_x(),
-                            KERNEL_SIZE);
+      convolution.prepare(camera_buffer,
+                          y, x,
+                          camera.get_res_y(), camera.get_res_x(),
+                          KERNEL_SIZE);
 
-
-        int conv_res = convolution.process(w);
-        lcd.DrawPixel(x + x_ofs, y + y_ofs, conv_res, conv_res, conv_res);
-      }
+      int conv_res = convolution.process(w);
+      lcd.DrawPixel(x + x_ofs, y + y_ofs, conv_res, conv_res, conv_res);
+    }
 }
 
 void CLCDDemo::operator()()
@@ -106,11 +105,11 @@ void CLCDDemo::operator()()
 
 
    process_filter(w_identity, 0*size_y, 0*size_x);
-   process_filter(w_sobel_v, 0*size_y, 1*size_x);
-   process_filter(w_sobel_h, 0*size_y, 2*size_x);
-   process_filter(w_edges, 1*size_y, 0*size_x);
-   process_filter(w_sharp, 1*size_y, 1*size_x);
-   process_filter(w_cross, 1*size_y, 2*size_x);
+   process_filter(w_sobel_v,  0*size_y, 1*size_x);
+   process_filter(w_sobel_h,  0*size_y, 2*size_x);
+   process_filter(w_edges,    1*size_y, 0*size_x);
+   process_filter(w_sharp,    1*size_y, 1*size_x);
+   process_filter(w_cross,    1*size_y, 2*size_x);
 
 
    unsigned int time_stop = timer.get_time();
