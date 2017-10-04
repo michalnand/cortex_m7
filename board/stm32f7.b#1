@@ -2205,8 +2205,8 @@ design rules under a new name.</description>
 <element name="C11" library="resistor" package="C0805" value="10uF" x="20.7264" y="45.72" rot="R270"/>
 <element name="C12" library="resistor" package="C0805" value="100n" x="23.4696" y="41.4528" rot="R90"/>
 <element name="C13" library="resistor" package="C0805" value="10uF" x="20.7264" y="41.4528" rot="R90"/>
-<element name="S1" library="switch-tact" package="DTSM-6" value="DTSM-6" x="4.572" y="5.4864" rot="R90"/>
-<element name="S2" library="switch-tact" package="DTSM-6" value="DTSM-6" x="40.8432" y="5.1816" rot="R90"/>
+<element name="S1" library="switch-tact" package="DTSM-6" value="DTSM-6" x="-5.7912" y="5.7912"/>
+<element name="S2" library="switch-tact" package="DTSM-6" value="DTSM-6" x="-15.5448" y="5.7912"/>
 </elements>
 <signals>
 <signal name="VBAT">
