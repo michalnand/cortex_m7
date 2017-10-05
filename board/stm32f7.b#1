@@ -2840,8 +2840,7 @@ design rules under a new name.</description>
 <wire x1="25.916559375" y1="28.65975625" x2="25.916559375" y2="29.252240625" width="0.3048" layer="16"/>
 <wire x1="25.916559375" y1="29.252240625" x2="25.908" y2="29.2608" width="0.3048" layer="16"/>
 <contactref element="C4" pad="2"/>
-<wire x1="36.0452" y1="36.2712" x2="42.2508" y2="39.6114" width="0" layer="19" extent="1-1"/>
-<wire x1="31.40295625" y1="32.909840625" x2="36.0452" y2="36.2712" width="0" layer="19" extent="1-1"/>
+<wire x1="31.40295625" y1="32.909840625" x2="42.2508" y2="39.6114" width="0" layer="19" extent="1-1"/>
 <wire x1="41.139440625" y1="17.974640625" x2="40.546959375" y2="17.974640625" width="0" layer="19" extent="1-1"/>
 <wire x1="23.4696" y1="42.3028" x2="24.9936" y2="39.624" width="0" layer="19" extent="1-16"/>
 <wire x1="7.7364" y1="9.4614" x2="11.088" y2="9.1948" width="0" layer="19" extent="1-1"/>
@@ -2853,6 +2852,7 @@ design rules under a new name.</description>
 <wire x1="11.615" y1="27.5954" x2="11.615" y2="30.1954" width="0" layer="19" extent="1-1"/>
 <wire x1="11.615" y1="26.9454" x2="11.615" y2="27.5954" width="0" layer="19" extent="1-1"/>
 <wire x1="7.572" y1="27.9656" x2="11.615" y2="27.5954" width="0" layer="19" extent="1-1"/>
+<wire x1="36.0452" y1="36.2712" x2="11.1388" y2="4.9784" width="0" layer="19" extent="1-1"/>
 <wire x1="7.8768" y1="41.9864" x2="11.615" y2="32.1454" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="RESET">
