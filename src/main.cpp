@@ -56,7 +56,7 @@ int main()
 
   terminal.init();
 
-  terminal << "some string" << my_int << " " << flt << ' ' << 789 << "\n";
+  terminal << "some string " << my_int << " " << flt << ' ' << 789 << "\n";
 
   timer.init();
 
