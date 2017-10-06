@@ -16,6 +16,11 @@ CTerminal::~CTerminal()
 
 }
 
+void CTerminal::puts(const char *s)
+{
+  while (*s)
+    put_char(*s++);
+}
 
 void CTerminal::puts(char *s)
 {

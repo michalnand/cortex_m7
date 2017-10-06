@@ -13,7 +13,7 @@ class CInfoTask: public CTask
   private:
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
     CVL53L0X laser;
- 
+
   public:
     CInfoTask();
     ~CInfoTask();
@@ -50,8 +50,13 @@ int main()
 {
   core_init();
 
+  int my_int = -1234567;
+  float flt = 3.141592654;
+
 
   terminal.init();
+
+  terminal << "some string" << my_int << " " << flt << ' ' << 789 << "\n";
 
   timer.init();
 

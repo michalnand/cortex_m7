@@ -4,20 +4,9 @@
 class CTask
 {
   public:
-    CTask()
-    {
-
-    }
-
-    virtual ~CTask()
-    {
-
-    }
-
-    virtual void operator()()
-    {
-
-    }
+    CTask() { }
+    virtual ~CTask() { }
+    virtual void operator()() = 0;
 };
 
 #endif
