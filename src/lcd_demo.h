@@ -6,7 +6,7 @@
 #include "external/camera.h"
 #include "convolution_2d.h"
 
-class CLCDDemo: public CTask
+class CLCDDemo: public CThread
 {
   private:
     unsigned int transparency;

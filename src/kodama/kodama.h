@@ -10,7 +10,7 @@
 #include <terminal.h>
 #include <timer.h>
 
-#include <task.h>
+#include <thread.h>
 
 
 #include <i2c.h>

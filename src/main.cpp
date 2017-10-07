@@ -8,7 +8,7 @@
 #include <lcd_demo.h>
 
 
-class CInfoTask: public CTask
+class CInfoTask: public CThread
 {
   private:
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;

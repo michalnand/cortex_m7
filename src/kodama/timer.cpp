@@ -74,7 +74,7 @@ int CTimer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_
 }
 
 
-int CTimer::add_task(class CTask *callback_functor, unsigned int period_ms, bool main_loop_callback_enabled)
+int CTimer::add_task(class CThread *callback_functor, unsigned int period_ms, bool main_loop_callback_enabled)
 {
   int timer_idx = -1;
 
