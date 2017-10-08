@@ -1,20 +1,21 @@
 #ifndef _KODAMA_H_
 #define _KODAMA_H_
 
-#include "stm32f7xx.h"
-#include "stm32f7xx_hal.h"
+#include <kodama_config.h>
 
 #include <tgpio.h>
 
 #include <usart.h>
 #include <terminal.h>
-#include <timer.h>
-
 #include <thread.h>
-
-
+#include <timer.h>
 #include <i2c.h>
 
+#include <mem.h>
 
+#include <fast_math.h>
+#include <pca.h>
+
+#include <pid.h>
 
 #endif

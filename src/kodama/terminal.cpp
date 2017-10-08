@@ -8,7 +8,7 @@ CTerminal::CTerminal()
           :CUSART()
 {
 
-
+ 
 }
 
 CTerminal::~CTerminal()

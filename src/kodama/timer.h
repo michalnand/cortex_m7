@@ -3,7 +3,6 @@
 
 #include <kodama.h>
 
-#define TIMERS_COUNT    ((unsigned int)32)
 
 struct sTimer
 {

@@ -11,17 +11,6 @@
 #define GPIO_MODE_AN              4       //analog input
 
 
-#define TGPIOA    ((unsigned char)0)
-#define TGPIOB    ((unsigned char)1)
-#define TGPIOC    ((unsigned char)2)
-#define TGPIOD    ((unsigned char)3)
-#define TGPIOE    ((unsigned char)4)
-#define TGPIOF    ((unsigned char)5)
-#define TGPIOG    ((unsigned char)6)
-#define TGPIOH    ((unsigned char)7)
-#define TGPIOI    ((unsigned char)8)
-#define TGPIOJ    ((unsigned char)9)
-#define TGPIOK    ((unsigned char)10)
 
 
 template <const unsigned char gpio, unsigned char pin, unsigned char mode = GPIO_MODE_OUT> class TGpio
@@ -33,51 +22,106 @@ template <const unsigned char gpio, unsigned char pin, unsigned char mode = GPIO
   public:
     TGpio()
     {
+      #ifdef TGPIOA
       __GPIOA_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOB
       __GPIOB_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOC
       __GPIOC_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOD
       __GPIOD_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOE
       __GPIOE_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOF
       __GPIOF_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOG
       __GPIOG_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOH
       __GPIOH_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOI
       __GPIOI_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOJ
       __GPIOJ_CLK_ENABLE();
+      #endif
+
+      #ifdef TGPIOK
       __GPIOK_CLK_ENABLE();
+      #endif
 
+      GPIOx = nullptr;
 
+      #ifdef TGPIOA
       if (gpio == TGPIOA)
         GPIOx = GPIOA;
+      #endif
 
+      #ifdef TGPIOB
       if (gpio == TGPIOB)
         GPIOx = GPIOB;
+      #endif
 
+      #ifdef TGPIOC
       if (gpio == TGPIOC)
         GPIOx = GPIOC;
+      #endif
 
+      #ifdef TGPIOD
       if (gpio == TGPIOD)
         GPIOx = GPIOD;
+      #endif
 
+      #ifdef TGPIOE
       if (gpio == TGPIOE)
         GPIOx = GPIOE;
+      #endif
 
+      #ifdef TGPIOF
       if (gpio == TGPIOF)
         GPIOx = GPIOF;
+      #endif
 
+      #ifdef TGPIOG
       if (gpio == TGPIOG)
         GPIOx = GPIOG;
+      #endif
 
+      #ifdef TGPIOH
       if (gpio == TGPIOH)
         GPIOx = GPIOH;
+      #endif
 
+      #ifdef TGPIOI
       if (gpio == TGPIOI)
         GPIOx = GPIOI;
+      #endif
 
+      #ifdef TGPIOJ
       if (gpio == TGPIOJ)
         GPIOx = GPIOJ;
+      #endif
 
+      #ifdef TGPIOK
       if (gpio == TGPIOK)
         GPIOx = GPIOK;
+      #endif
 
       set_mode(mode);
     }

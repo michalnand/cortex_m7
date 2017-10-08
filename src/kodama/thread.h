@@ -8,11 +8,6 @@ class CThread
     virtual ~CThread() { }
     virtual void operator()() = 0;
 
-  private:
-    void caller()
-    {
-      (*this)();
-    }
 };
 
 #endif
