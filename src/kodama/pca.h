@@ -25,6 +25,9 @@ class CPCA
 
     ~CPCA();
 
+    void  set_weights(float *weights_init);
+    float get_weight(unsigned int neuron, unsigned int input_idx);
+
     void process(float *input_, int learn_layer_idx = -1, bool relu = false);
 };
 

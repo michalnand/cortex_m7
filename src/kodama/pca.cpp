@@ -24,6 +24,16 @@ CPCA::~CPCA()
   delete output;
 }
 
+void CPCA::set_weights(float *weights_init)
+{
+  fm.v_copy(w, weights_init, input_size*output_size);
+}
+
+float CPCA::get_weight(unsigned int neuron, unsigned int input_idx)
+{
+  return w[neuron*input_size + input_idx];
+}
+
 void CPCA::process(float *input_, int learn_layer_idx, bool relu)
 {
   fm.v_copy(input, input_, input_size);
