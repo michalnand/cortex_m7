@@ -123,7 +123,7 @@ void math_test()
   time_sum+= time;
 
   terminal.printf("vector fast tanh %u [ms]\n", time);
- 
+
 
 
   init_vectors();
@@ -141,9 +141,6 @@ void math_test()
 
 }
 
-
-
-
 int main()
 {
   core_init();
@@ -153,7 +150,6 @@ int main()
 
 
   math_test();
-
 
   sdram.init();
 
@@ -165,10 +161,10 @@ int main()
 
   class CInfoTask info_task;
   timer.add_task(&info_task, 500);   //period 500ms
-/*
+
   class CLCDDemo lcd_demo;
   timer.add_task(&lcd_demo, 50);   //period 50ms
-*/
+
 
   while (1)
   {

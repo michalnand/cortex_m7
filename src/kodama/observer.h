@@ -7,7 +7,7 @@
 
 #include <kodama_config.h>
 
-/*
+
 #ifndef __disable_interrupt
   #define __disable_interrupt() __asm("nop");
 #endif
@@ -15,7 +15,7 @@
 #ifndef __enable_interrupt
   #define __enable_interrupt() __asm("nop");
 #endif
-*/
+
 
 template <class t_type, unsigned char mode = M_MODE_READ_ATOMIC> class Observer
 {
