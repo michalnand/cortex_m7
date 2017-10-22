@@ -288,6 +288,12 @@ void CLCDDemo::squares_demo()
   }
 }
 
+float get_wave(float x, float y, float x0, float y0, float time, float freq)
+{
+  float radius = fm.sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
+  return fm.cos(freq*radius + time);
+}
+
 void CLCDDemo::wave()
 {
   lcd.FillLayer(RGB_COL_BLACK);
@@ -295,26 +301,25 @@ void CLCDDemo::wave()
   for (unsigned int y = 0; y < lcd.get_height(); y+= 4)
   for (unsigned int x = 0; x < lcd.get_width(); x+= 4)
   {
-    float ft = 0.4*time;
+    float ft = -0.5*time;
 
     float fx = 20.0*((float)x/lcd.get_width()  - 0.5);
     float fy = 20.0*((float)y/lcd.get_height() - 0.5);
 
-    float radius = fm.sqrt(fx*fx + fy*fy);
-    float z = 10.0*fm.cos(radius + ft);
+    float z = 0.0;
+
+    z+= get_wave(fx, fy, 0.0, 0.0, ft, 1.0);
+    z+= 0.3*get_wave(fx, fy, -20.0, -20.0, ft, 1.1);
+    z+= 0.3*get_wave(fx, fy, -20.0,  20.0, ft, 1.2);
+    z+= 0.3*get_wave(fx, fy,  20.0, -20.0, ft, 1.3);
+    z+= 0.3*get_wave(fx, fy,  20.0,  20.0, ft, 1.4);
+
 
     int16_t x_ = x + 50;
-    int16_t y_ = lcd.get_height()/2 + z;
+    int16_t y_ = lcd.get_height()/2 + 10.0*z;
     int16_t z_ = y - 100;
 
     lcd.SetCursor3Draw(x_, y_, z_);
-
-/*
-    int color = 256*fm.abs(z/50.0);
-    unsigned char r = (color + 0*85)%256;
-    unsigned char g = (color + 1*85)%256;
-    unsigned char b = (color + 2*85)%256;
-*/
 
     unsigned int ptr = 3*((lcd.get_height() - 1 - y)*lcd.get_width() + x);
 

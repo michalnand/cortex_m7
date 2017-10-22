@@ -33,7 +33,7 @@ float CFM::cos(float x)
 {
   x = abs(x);
 
-  volatile int tmp = x/(2.0*PI);
+  int tmp = x/(2.0*PI);
   x-= tmp*2.0*PI;
 
   float t , s;
