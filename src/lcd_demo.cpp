@@ -292,10 +292,10 @@ void CLCDDemo::wave()
 {
   lcd.FillLayer(RGB_COL_BLACK);
 
-  for (unsigned int y = 0; y < lcd.get_width(); y+= 8)
-  for (unsigned int x = 0; x < lcd.get_height(); x+= 8)
+  for (unsigned int y = 0; y < lcd.get_height(); y+= 4)
+  for (unsigned int x = 0; x < lcd.get_width(); x+= 4)
   {
-    float ft = 0.3*time;
+    float ft = 0.4*time;
 
     float fx = 20.0*((float)x/lcd.get_width()  - 0.5);
     float fy = 20.0*((float)y/lcd.get_height() - 0.5);
@@ -303,17 +303,24 @@ void CLCDDemo::wave()
     float radius = fm.sqrt(fx*fx + fy*fy);
     float z = 10.0*fm.cos(radius + ft);
 
-    int16_t x_ = x + 180;
+    int16_t x_ = x + 50;
     int16_t y_ = lcd.get_height()/2 + z;
     int16_t z_ = y - 100;
 
     lcd.SetCursor3Draw(x_, y_, z_);
 
+/*
     int color = 256*fm.abs(z/50.0);
-
     unsigned char r = (color + 0*85)%256;
     unsigned char g = (color + 1*85)%256;
     unsigned char b = (color + 2*85)%256;
+*/
+
+    unsigned int ptr = 3*((lcd.get_height() - 1 - y)*lcd.get_width() + x);
+
+    unsigned char r = gimp_image.pixel_data[ptr + 0];
+    unsigned char g = gimp_image.pixel_data[ptr + 1];
+    unsigned char b = gimp_image.pixel_data[ptr + 2];
 
     lcd.DrawPixel(r, g, b);
   }
