@@ -4,10 +4,11 @@
 class CThread
 {
   public:
+    
     CThread() { }
     virtual ~CThread() { }
-    virtual void operator()() = 0;
 
+    virtual void main() = 0;
 };
 
 #endif

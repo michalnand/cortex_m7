@@ -53,6 +53,12 @@ class CTerminal: public CUSART
       return *this;
     }
 
+    CTerminal& operator<< (unsigned int op)
+    {
+      putui(op);
+      return *this;
+    }
+
     CTerminal& operator<< (float op)
     {
       putf(op, 3);

@@ -7,7 +7,7 @@
 struct sTimer
 {
   void (*callback)();
-  class CThread *callback_functor;
+  class CThread *callback_class;
   unsigned int period, cnt;
   unsigned char flag;
   bool main_loop_callback_enabled;
@@ -34,7 +34,7 @@ class CTimer
     //if set to false, task function is executing inside interrupt rutine - and other interrupts are blocked
     int add_task(void (*callback)(), unsigned int period_ms, bool main_loop_callback_enabled = true);
 
-    int add_task(class CThread *callback_functor, unsigned int period_ms, bool main_loop_callback_enabled = true);
+    int add_task(class CThread *callback_class, unsigned int period_ms, bool main_loop_callback_enabled = true);
 
 
     //@brief start real timer tasks executing

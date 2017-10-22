@@ -28,7 +28,7 @@ class CLCDDemo: public CThread
     CLCDDemo();
     ~CLCDDemo();
 
-    void operator()();
+    void main();
 
   private:
     void process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs);
@@ -38,6 +38,7 @@ class CLCDDemo: public CThread
 
     void fractal();
     void squares_demo();
+    void wave();
 
     unsigned int julia_set_point(float ri, float re, float ci, float cr, unsigned int iterations);
     void paint_rectangle( int y, int x,

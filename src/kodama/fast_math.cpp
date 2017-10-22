@@ -28,9 +28,15 @@ float CFM::sqrt(float x)
   return(result);
 }
 
+
 float CFM::cos(float x)
 {
-  float t , s ;
+  x = abs(x);
+
+  volatile int tmp = x/(2.0*PI);
+  x-= tmp*2.0*PI;
+
+  float t , s;
 
   int p;
 
@@ -44,7 +50,13 @@ float CFM::cos(float x)
         t = (-t * x * x) / ((2 * p - 1) * (2 * p));
         s += t;
   }
-    return s;
+
+  return s;
+}
+
+float CFM::sin(float x)
+{
+  return cos(x + PI/2.0);
 }
 
 void CFM::srand(unsigned int seed)

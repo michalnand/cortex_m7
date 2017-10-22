@@ -254,7 +254,7 @@ void CLCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
   aktCursorPos=LCD_CurrentFrameBuffer+(2*((aktCursorY*LCD_MAXX)+aktCursorX));
 }
 
-void CLCD::SetCursor3Draw(uint16_t xpos, uint16_t ypos, uint16_t zpos)
+void CLCD::SetCursor3Draw(int16_t xpos, int16_t ypos, int16_t zpos)
 {
   int16_t tmp_x = xpos - (zpos*7)/10;
   int16_t tmp_y = ypos - (zpos*7)/10;

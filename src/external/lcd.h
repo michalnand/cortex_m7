@@ -76,7 +76,7 @@ class CLCD
     void FillLayer(uint16_t color);
     void SetTransparency(uint8_t transparency);
     void SetCursor2Draw(uint16_t xpos, uint16_t ypos);
-    void SetCursor3Draw(uint16_t xpos, uint16_t ypos, uint16_t zpos);
+    void SetCursor3Draw(int16_t xpos, int16_t ypos, int16_t zpos);
 
 
     void DrawPixel(uint16_t color);

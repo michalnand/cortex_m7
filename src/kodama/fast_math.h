@@ -3,6 +3,8 @@
 
 #define FM_UNROLL   1
 
+#define PI          ((float)3.141592654)
+
 class CFM
 {
   private:
@@ -15,6 +17,8 @@ class CFM
     float abs(float x);
     float sqrt(float x);
     float cos(float x);
+    float sin(float x);
+
 
     void srand(unsigned int seed);
     unsigned int rand();

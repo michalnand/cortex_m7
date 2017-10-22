@@ -8,14 +8,14 @@ CTerminal::CTerminal()
           :CUSART()
 {
 
- 
+
 }
 
 CTerminal::~CTerminal()
 {
 
 }
-
+ 
 void CTerminal::puts(const char *s)
 {
   while (*s)

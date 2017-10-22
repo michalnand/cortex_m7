@@ -18,7 +18,7 @@ void CTimer::init()
   for (i = 0; i < TIMERS_COUNT; i++)
   {
     g_timers[i].callback = nullptr;
-    g_timers[i].callback_functor = nullptr;
+    g_timers[i].callback_class = nullptr;
 
     g_timers[i].period = 1000;
     g_timers[i].cnt = 0;
@@ -55,13 +55,13 @@ int CTimer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_
   __disable_irq();
 
   for (unsigned char i = 0; i < TIMERS_COUNT; i++)
-    if ( (g_timers[i].callback == nullptr) && (g_timers[i].callback_functor == nullptr) )
+    if ( (g_timers[i].callback == nullptr) && (g_timers[i].callback_class == nullptr) )
       timer_idx = i;
 
   if (timer_idx != -1)
   {
     g_timers[(unsigned char)timer_idx].callback = callback;
-    g_timers[(unsigned char)timer_idx].callback_functor = nullptr;
+    g_timers[(unsigned char)timer_idx].callback_class = nullptr;
     g_timers[(unsigned char)timer_idx].period = period_ms;
     g_timers[(unsigned char)timer_idx].cnt = period_ms;
     g_timers[(unsigned char)timer_idx].flag = 0;
@@ -74,20 +74,20 @@ int CTimer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_
 }
 
 
-int CTimer::add_task(class CThread *callback_functor, unsigned int period_ms, bool main_loop_callback_enabled)
+int CTimer::add_task(class CThread *callback_class, unsigned int period_ms, bool main_loop_callback_enabled)
 {
   int timer_idx = -1;
 
   __disable_irq();
 
   for (unsigned char i = 0; i < TIMERS_COUNT; i++)
-    if ( (g_timers[i].callback == nullptr) && (g_timers[i].callback_functor == nullptr) )
+    if ( (g_timers[i].callback == nullptr) && (g_timers[i].callback_class == nullptr) )
       timer_idx = i;
 
   if (timer_idx != -1)
   {
     g_timers[(unsigned char)timer_idx].callback = nullptr;
-    g_timers[(unsigned char)timer_idx].callback_functor = callback_functor;
+    g_timers[(unsigned char)timer_idx].callback_class = callback_class;
     g_timers[(unsigned char)timer_idx].period = period_ms;
     g_timers[(unsigned char)timer_idx].cnt = period_ms;
     g_timers[(unsigned char)timer_idx].flag = 0;
@@ -115,8 +115,8 @@ void CTimer::main()
         if (g_timers[i].callback != nullptr)
           g_timers[i].callback();
 
-        if (g_timers[i].callback_functor != nullptr)
-          (*(g_timers[i].callback_functor))();
+        if (g_timers[i].callback_class != nullptr)
+          g_timers[i].callback_class->main();
       }
     i++;
     if (i >= TIMERS_COUNT)
@@ -220,8 +220,8 @@ void TIM2_IRQHandler()
           if (g_timers[i].callback != nullptr)
             g_timers[i].callback();
 
-          if (g_timers[i].callback_functor != nullptr)
-            (*(g_timers[i].callback_functor))();
+          if (g_timers[i].callback_class != nullptr)
+            g_timers[i].callback_class->main();
         }
       }
     }

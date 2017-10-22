@@ -58,14 +58,15 @@ CLCDDemo::CLCDDemo()
     squares[j].b = rnd()%256;
   }
 
-  int camera_init_res = camera.init();
+//  int camera_init_res = camera.init();
 
+/*
   if (camera_init_res != 0)
   {
     while (1)
       __asm("nop");
   }
-
+*/
   lcd.FillLayer(RGB_COL_BLACK);
 
   unsigned int size = (camera.get_res_y()*camera.get_res_x()*sizeof(uint16_t))/sizeof(uint32_t);
@@ -95,8 +96,11 @@ void CLCDDemo::process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs)
     }
 }
 
-void CLCDDemo::operator()()
+void CLCDDemo::main()
 {
+  lcd.Refresh();
+
+  /*
   unsigned int time_start = timer.get_time();
    lcd.Refresh();
 
@@ -115,6 +119,7 @@ void CLCDDemo::operator()()
    unsigned int time_stop = timer.get_time();
 
    terminal.printf("FPS %u\n", 1000/(time_stop - time_start) );
+*/
 
 /*
   if (time < 100)
@@ -128,7 +133,10 @@ void CLCDDemo::operator()()
     else
       fractal();
   }
-  */
+*/
+
+  wave();
+
   time++;
 }
 
@@ -277,6 +285,37 @@ void CLCDDemo::squares_demo()
     if (squares[j].y <= 0)
       squares[j].y = 1;
 
+  }
+}
+
+void CLCDDemo::wave()
+{
+  lcd.FillLayer(RGB_COL_BLACK);
+
+  for (unsigned int y = 0; y < lcd.get_width(); y+= 8)
+  for (unsigned int x = 0; x < lcd.get_height(); x+= 8)
+  {
+    float ft = 0.3*time;
+
+    float fx = 20.0*((float)x/lcd.get_width()  - 0.5);
+    float fy = 20.0*((float)y/lcd.get_height() - 0.5);
+
+    float radius = fm.sqrt(fx*fx + fy*fy);
+    float z = 10.0*fm.cos(radius + ft);
+
+    int16_t x_ = x + 180;
+    int16_t y_ = lcd.get_height()/2 + z;
+    int16_t z_ = y - 100;
+
+    lcd.SetCursor3Draw(x_, y_, z_);
+
+    int color = 256*fm.abs(z/50.0);
+
+    unsigned char r = (color + 0*85)%256;
+    unsigned char g = (color + 1*85)%256;
+    unsigned char b = (color + 2*85)%256;
+
+    lcd.DrawPixel(r, g, b);
   }
 }
 
