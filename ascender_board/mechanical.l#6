@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -57,16 +57,11 @@
 <library>
 <packages>
 <package name="BLDC_MOTOR_HOLDER">
-<wire x1="-49" y1="-20" x2="56" y2="-20" width="0.127" layer="21"/>
-<wire x1="56" y1="19" x2="-49" y2="19" width="0.127" layer="21"/>
+<wire x1="-49" y1="-20" x2="49" y2="-20" width="0.127" layer="21"/>
+<wire x1="49" y1="19" x2="-49" y2="19" width="0.127" layer="21"/>
 <wire x1="-49" y1="19" x2="-49" y2="-20" width="0.127" layer="21"/>
 <rectangle x1="32" y1="-15" x2="46" y2="10" layer="46"/>
 <polygon width="0.127" layer="39">
-<vertex x="-46.5" y="10.5"/>
-<vertex x="-31.5" y="10.5"/>
-<vertex x="-46.5" y="-15.5"/>
-</polygon>
-<polygon width="0.127" layer="40">
 <vertex x="-46.5" y="10.5"/>
 <vertex x="-31.5" y="10.5"/>
 <vertex x="-46.5" y="-15.5"/>
@@ -117,6 +112,7 @@
 </polygon>
 <hole x="-20" y="-12" drill="3.2"/>
 <hole x="20" y="-12" drill="3.2"/>
+<wire x1="49" y1="19" x2="49" y2="-20" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
