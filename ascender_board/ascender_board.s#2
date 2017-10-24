@@ -11855,6 +11855,11 @@ by exp-lbrs.ulp</description>
 <wire x1="355.6" y1="208.28" x2="347.98" y2="208.28" width="0.1524" layer="91"/>
 <label x="345.44" y="208.28" size="1.778" layer="95" rot="R180"/>
 </segment>
+<segment>
+<pinref part="U1" gate="A" pin="PE3"/>
+<wire x1="236.22" y1="83.82" x2="226.06" y2="83.82" width="0.1524" layer="91"/>
+<label x="223.52" y="83.82" size="1.778" layer="95" rot="R180"/>
+</segment>
 </net>
 <net name="SCL_ENC" class="0">
 <segment>
@@ -11877,12 +11882,22 @@ by exp-lbrs.ulp</description>
 <wire x1="406.4" y1="157.48" x2="398.78" y2="157.48" width="0.1524" layer="91"/>
 <label x="396.24" y="157.48" size="1.778" layer="95" rot="R180"/>
 </segment>
+<segment>
+<pinref part="U1" gate="A" pin="PE2"/>
+<wire x1="236.22" y1="86.36" x2="226.06" y2="86.36" width="0.1524" layer="91"/>
+<label x="223.52" y="86.36" size="1.778" layer="95" rot="R180"/>
+</segment>
 </net>
 <net name="SDA_2_ENC" class="0">
 <segment>
 <pinref part="U$24" gate="G$1" pin="SDA"/>
 <wire x1="355.6" y1="152.4" x2="347.98" y2="152.4" width="0.1524" layer="91"/>
 <label x="345.44" y="152.4" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="PE5"/>
+<wire x1="236.22" y1="78.74" x2="226.06" y2="78.74" width="0.1524" layer="91"/>
+<label x="223.52" y="78.74" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="SDA_1_ENC" class="0">
@@ -11891,12 +11906,22 @@ by exp-lbrs.ulp</description>
 <wire x1="406.4" y1="208.28" x2="398.78" y2="208.28" width="0.1524" layer="91"/>
 <label x="396.24" y="208.28" size="1.778" layer="95" rot="R180"/>
 </segment>
+<segment>
+<pinref part="U1" gate="A" pin="PE4"/>
+<wire x1="236.22" y1="81.28" x2="226.06" y2="81.28" width="0.1524" layer="91"/>
+<label x="223.52" y="81.28" size="1.778" layer="95" rot="R180"/>
+</segment>
 </net>
 <net name="SDA_3_ENC" class="0">
 <segment>
 <pinref part="U$25" gate="G$1" pin="SDA"/>
 <wire x1="406.4" y1="152.4" x2="398.78" y2="152.4" width="0.1524" layer="91"/>
 <label x="396.24" y="152.4" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="PE6"/>
+<wire x1="236.22" y1="76.2" x2="226.06" y2="76.2" width="0.1524" layer="91"/>
+<label x="223.52" y="76.2" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 </nets>

@@ -2750,8 +2750,10 @@ design rules under a new name.</description>
 <element name="C33" library="resistor" package="C0805" value="100n" x="39.1736" y="13.702" rot="MR270"/>
 <element name="C34" library="resistor" package="C0805" value="10uF" x="42.674" y="14.2524" rot="MR270"/>
 <element name="U$3" library="mechanical" package="BLDC_MOTOR_HOLDER" value="" x="27" y="40" rot="R90"/>
-<element name="U$22" library="my_parts" package="SOT23-5" value="SI7210" x="-1.778" y="-7.112"/>
-<element name="U$23" library="my_parts" package="SOT23-5" value="SI7210" x="-1.778" y="-10.668"/>
+<element name="U$22" library="my_parts" package="SOT23-5" value="SI7210" x="58.42" y="11.43" rot="MR0"/>
+<element name="U$23" library="my_parts" package="SOT23-5" value="SI7210" x="67.564" y="9.906" rot="MR0"/>
+<element name="U$24" library="my_parts" package="SOT23-5" value="SI7210" x="75.184" y="9.906" rot="MR0"/>
+<element name="U$25" library="my_parts" package="SOT23-5" value="SI7210" x="81.534" y="8.89" rot="MR0"/>
 </elements>
 <signals>
 <signal name="VBAT">
@@ -3107,6 +3109,8 @@ design rules under a new name.</description>
 <wire x1="9.4488" y1="17.3424" x2="9.4488" y2="17.78" width="0.6096" layer="16"/>
 <contactref element="U$22" pad="P$2"/>
 <contactref element="U$23" pad="P$2"/>
+<contactref element="U$24" pad="P$2"/>
+<contactref element="U$25" pad="P$2"/>
 <wire x1="79.9864" y1="36.3484" x2="84.0504" y2="37.8724" width="0" layer="19" extent="1-1"/>
 <wire x1="77.9544" y1="34.0624" x2="79.9864" y2="36.3484" width="0" layer="19" extent="1-1"/>
 <wire x1="74.6524" y1="34.2656" x2="77.9544" y2="34.0624" width="0" layer="19" extent="16-16"/>
@@ -3134,8 +3138,10 @@ design rules under a new name.</description>
 <wire x1="39.1736" y1="12.852" x2="32.4582" y2="10.8438" width="0" layer="19" extent="16-16"/>
 <wire x1="42.674" y1="13.4024" x2="39.1736" y2="12.852" width="0" layer="19" extent="16-16"/>
 <wire x1="11.8352" y1="52.2944" x2="30.3534" y2="50.5298" width="0" layer="19" extent="16-16"/>
-<wire x1="-1.778" y1="-6.112" x2="9.4488" y2="10.668" width="0" layer="19" extent="1-16"/>
-<wire x1="-1.778" y1="-9.668" x2="-1.778" y2="-6.112" width="0" layer="19" extent="1-1"/>
+<wire x1="58.42" y1="12.43" x2="9.4488" y2="10.668" width="0" layer="19" extent="1-16"/>
+<wire x1="67.564" y1="10.906" x2="58.42" y2="12.43" width="0" layer="19" extent="1-1"/>
+<wire x1="75.184" y1="10.906" x2="67.564" y2="10.906" width="0" layer="19" extent="1-1"/>
+<wire x1="81.534" y1="9.89" x2="75.184" y2="10.906" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="RESET">
 <contactref element="U1" pad="14"/>
@@ -3318,8 +3324,12 @@ design rules under a new name.</description>
 <wire x1="62.546" y1="35.164" x2="62.546" y2="34.688" width="0.3048" layer="16"/>
 <contactref element="U$22" pad="P$4"/>
 <contactref element="U$23" pad="P$4"/>
-<wire x1="-2.728" y1="-8.212" x2="49.8908" y2="39.1412" width="0" layer="19" extent="1-1"/>
-<wire x1="-2.728" y1="-11.768" x2="-2.728" y2="-8.212" width="0" layer="19" extent="1-1"/>
+<contactref element="U$24" pad="P$4"/>
+<contactref element="U$25" pad="P$4"/>
+<wire x1="59.37" y1="10.33" x2="49.8908" y2="39.1412" width="0" layer="19" extent="1-1"/>
+<wire x1="68.514" y1="8.806" x2="59.37" y2="10.33" width="0" layer="19" extent="1-1"/>
+<wire x1="76.134" y1="8.806" x2="68.514" y2="8.806" width="0" layer="19" extent="1-1"/>
+<wire x1="82.484" y1="7.79" x2="76.134" y2="8.806" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="BOOT">
 <contactref element="U1" pad="94"/>
@@ -4162,16 +4172,36 @@ design rules under a new name.</description>
 <contactref element="U1" pad="36"/>
 <wire x1="33.7282" y1="10.8438" x2="76.139253125" y2="48.423134375" width="0" layer="19" extent="1-16"/>
 </signal>
-<signal name="SDA_1_ENC">
+<signal name="SDA_0_ENC">
 <contactref element="U$22" pad="P$1"/>
+<contactref element="U1" pad="2"/>
+<wire x1="57.47" y1="12.43" x2="71.5413625" y2="34.306171875" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="SCL_ENC">
 <contactref element="U$22" pad="P$3"/>
 <contactref element="U$23" pad="P$3"/>
-<wire x1="-2.728" y1="-6.112" x2="-2.728" y2="-9.668" width="0" layer="19" extent="1-1"/>
+<contactref element="U$24" pad="P$3"/>
+<contactref element="U$25" pad="P$3"/>
+<contactref element="U1" pad="1"/>
+<wire x1="76.134" y1="10.906" x2="71.2001125" y2="33.964921875" width="0" layer="19" extent="1-1"/>
+<wire x1="82.484" y1="9.89" x2="76.134" y2="10.906" width="0" layer="19" extent="1-1"/>
+<wire x1="68.514" y1="10.906" x2="76.134" y2="10.906" width="0" layer="19" extent="1-1"/>
+<wire x1="59.37" y1="12.43" x2="68.514" y2="10.906" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="SDA_2_ENC">
+<contactref element="U$24" pad="P$1"/>
+<contactref element="U1" pad="4"/>
+<wire x1="74.234" y1="10.906" x2="72.259784375" y2="35.024590625" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="SDA_1_ENC">
 <contactref element="U$23" pad="P$1"/>
+<contactref element="U1" pad="3"/>
+<wire x1="66.614" y1="10.906" x2="71.900571875" y2="34.66538125" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="SDA_3_ENC">
+<contactref element="U$25" pad="P$1"/>
+<contactref element="U1" pad="5"/>
+<wire x1="80.584" y1="9.89" x2="72.61899375" y2="35.383803125" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 <errors>
