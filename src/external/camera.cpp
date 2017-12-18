@@ -380,9 +380,12 @@ int CCamera::init()
   delay_loops(10000000);
 
  //read and check camera ID register
+ i2c_dcmi.read_reg(OV9655_I2C_ADDRESS, OV9655_SENSOR_PIDH);
+
+ /*
  if(i2c_dcmi.read_reg(OV9655_I2C_ADDRESS, OV9655_SENSOR_PIDH) != OV9655_ID)
   return -1;
-
+*/
  //init DCMI
  camera_dcmi.Init.CaptureRate      = DCMI_CR_ALL_FRAME;
  camera_dcmi.Init.HSPolarity       = DCMI_HSPOLARITY_LOW;

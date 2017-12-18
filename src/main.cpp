@@ -6,6 +6,7 @@
 
 #include <kodama.h>
 #include <lcd_demo.h>
+#include <ir_cam.h>
 
 
 class CInfoTask: public CThread
@@ -20,7 +21,7 @@ class CInfoTask: public CThread
 
     void main();
 };
-
+ 
 CInfoTask::CInfoTask()
 {
   terminal.printf("\n\n\n");
@@ -62,8 +63,13 @@ int main()
   class CInfoTask info_task;
   timer.add_task(&info_task, 500);   //period 500ms
 
+  /*
   class CLCDDemo lcd_demo;
   timer.add_task(&lcd_demo, 50);   //period 50ms
+  */
+
+  class CIRCAM ir_cam;
+  timer.add_task(&ir_cam, 50);   //period 50ms
 
 
   while (1)

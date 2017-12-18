@@ -61,8 +61,10 @@ int CMLX90621::init(CI2C_Interface *i2c_)
 
   for (j = 0; j < IR_HEIGHT; j++)
     for (i = 0; i < IR_WIDTH; i++)
+    {
       ir_result.pixels[j][i] = 0;
-
+      ir_result.background[j][i] = 0;
+    }
 /*
   i2c->start();
   i2c->write(MLX9062_ADDRESS);
@@ -171,8 +173,7 @@ void CMLX90621::read()
       tmp = i2c->read(1);
       tmp|= ((unsigned int)i2c->read(1))<<8;
 
-    //tmp = -tmp;
-      ir_result.pixels[IR_HEIGHT - 1 - j][i] = tmp;
+     ir_result.pixels[IR_HEIGHT - 1 - j][i] = tmp;
       if (tmp > ir_result.max_value)
         ir_result.max_value = tmp;
 
@@ -201,7 +202,17 @@ void CMLX90621::read()
     for (i = 0; i < IR_WIDTH; i++)
       ir_result.pixels[j][i] = (k*ir_result.pixels[j][i] + q)/((int32_t)1000);
 
+  float filter_coef = 0.7;
 
+  for (j = 0; j < IR_HEIGHT; j++)
+    for (i = 0; i < IR_WIDTH; i++)
+      ir_result.background[j][i] = filter_coef*ir_result.background[j][i] + (1.0 - filter_coef)*ir_result.pixels[j][i];
+
+  for (j = 0; j < IR_HEIGHT; j++)
+    for (i = 0; i < IR_WIDTH; i++)
+      ir_result.pixels[j][i] = ir_result.pixels[j][i] - ir_result.background[j][i];
+
+/*
   //find center of mass
   int32_t sum = 0.0;
   int32_t center_x = 0.0;
@@ -223,4 +234,5 @@ void CMLX90621::read()
 
   ir_result.center_x = center_x/sum;
   ir_result.center_y = center_y/sum;
+*/
 }

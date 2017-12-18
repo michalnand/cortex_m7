@@ -11,6 +11,8 @@
 struct sIRresult
 {
   int16_t pixels[IR_HEIGHT][IR_WIDTH];              //return normalised pixel data, in range <0, 255>
+  int16_t background[IR_HEIGHT][IR_WIDTH];              //return normalised pixel data, in range <0, 255>
+
   int16_t max_value, min_value, average_value;     //return maximal, minimal, and average value; before normalisatiion
   int16_t center_x, center_y;                       //return poisiton, in range <0, IR_POSITION_RANGE>
 };
@@ -19,6 +21,8 @@ class CMLX90621
 {
   public:
     struct sIRresult ir_result;
+
+  private:
     CI2C_Interface *i2c;
 
   public:
@@ -28,6 +32,15 @@ class CMLX90621
     int init(CI2C_Interface *i2c_);
     void read();
 
+    unsigned int get_res_y()
+    {
+      return IR_HEIGHT;
+    }
+
+    unsigned int get_res_x()
+    {
+      return IR_WIDTH;
+    }
 
 };
 

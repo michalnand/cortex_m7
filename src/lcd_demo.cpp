@@ -97,7 +97,7 @@ void CLCDDemo::process_filter(int *w, unsigned int y_ofs, unsigned int x_ofs)
 }
 
 void CLCDDemo::main()
-{
+{  
   lcd.Refresh();
 
   /*
