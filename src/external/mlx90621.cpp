@@ -207,11 +207,11 @@ void CMLX90621::read()
   for (j = 0; j < IR_HEIGHT; j++)
     for (i = 0; i < IR_WIDTH; i++)
       ir_result.background[j][i] = filter_coef*ir_result.background[j][i] + (1.0 - filter_coef)*ir_result.pixels[j][i];
-
+/*
   for (j = 0; j < IR_HEIGHT; j++)
     for (i = 0; i < IR_WIDTH; i++)
       ir_result.pixels[j][i] = ir_result.pixels[j][i] - ir_result.background[j][i];
-
+*/
 /*
   //find center of mass
   int32_t sum = 0.0;

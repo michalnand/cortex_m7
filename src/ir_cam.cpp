@@ -133,8 +133,10 @@ void CIRCAM::ir_draw(unsigned int y_ofs, unsigned int x_ofs,
 
 
 void CIRCAM::paint_rectangle(int y, int x,
-                                unsigned int width, unsigned int height,
-                                unsigned char r, unsigned char g, unsigned char b)
+                             unsigned int width, unsigned int height,
+                             unsigned char r,
+                             unsigned char g,
+                             unsigned char b)
 {
   if (y < 0)
    y = 0;
