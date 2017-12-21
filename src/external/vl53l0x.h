@@ -1,23 +1,28 @@
 #ifndef _VL53L0X_H_
 #define _VL53L0X_H_
 
-#include <kodama.h>
+#include "i2c.h"
 
 class CVL53L0X
 {
   private:
     int distance_result;
+    bool valid_data;
 
     unsigned char range_data[14];
+
+  private:
+    class CI2C_Interface *i2c;
 
   public:
     CVL53L0X();
     ~CVL53L0X();
 
-    int laser_init();
+    int init(class CI2C_Interface *i2c_);
 
-    int laser_read();
-    int laser_get();
+    int read();
+    int get_distance();
+    bool is_valid();
 
   private:
     bool getSPADinfo(unsigned char *count, bool * type_is_aperture);

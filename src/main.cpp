@@ -15,18 +15,24 @@ class CInfoTask: public CThread
     TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
     CVL53L0X laser;
 
+    class TI2C<TGPIOF, 10, 6, I2C_SPEED> laser_i2c;
+
+
   public:
     CInfoTask();
     ~CInfoTask();
 
     void main();
 };
- 
+
 CInfoTask::CInfoTask()
 {
   terminal.printf("\n\n\n");
   terminal.printf("info task init\n");
-  laser.laser_init();
+  int res = laser.init(&laser_i2c);
+
+  terminal.printf("laser init result %i\n", res);
+
   led = 1;
 }
 
@@ -38,8 +44,8 @@ CInfoTask::~CInfoTask()
 void CInfoTask::main()
 {
   led = 1;
-  laser.laser_read();
-  terminal.printf("uptime %u [ms], laser distance %i [mm]\n", timer.get_time(), laser.laser_get());
+  laser.read();
+  terminal.printf("uptime %u [ms], laser distance %i [mm]\n", timer.get_time(), laser.get_distance());
 
   led = 0;
 }
