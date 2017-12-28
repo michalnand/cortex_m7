@@ -121,6 +121,9 @@
 <vertex x="-46.5" y="-15.5"/>
 </polygon>
 <circle x="-20" y="-12" radius="3" width="0.127" layer="21"/>
+<circle x="20" y="-12" radius="3" width="0.127" layer="21"/>
+<circle x="37" y="14" radius="3" width="0.127" layer="21"/>
+<circle x="-37" y="14" radius="3" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
