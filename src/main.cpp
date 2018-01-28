@@ -4,58 +4,13 @@
 #include "external/vl53l0x.h"
 #include "external/ft5336.h"
 
-#include <kodama.h>
+#include <kodama.h> 
 #include <lcd_demo.h>
 #include <ir_cam.h>
 
+#include "nn_demo/nn_demo.h"
 
-class CInfoTask: public CThread
-{
-  private:
-    TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
-
-    TI2C<TGPIOF, 10, 6, I2C_SPEED> laser_i2c;
-    CVL53L0X laser;
-
-
-    TI2C<TGPIOH, 8, 7, I2C_SPEED> touch_i2c;
-    FT5336 touch;
-
-    int line_start_x, line_start_y;
-    int line_end_x, line_end_y;
-
-  public:
-    CInfoTask();
-    ~CInfoTask();
-
-    void main();
-};
-
-CInfoTask::CInfoTask()
-{
-  terminal.printf("\n\n\n");
-  terminal.printf("info task init\n");
-  int init_res;
-
-  init_res = laser.init(&laser_i2c);
-  terminal.printf("laser init result %i\n", init_res);
-
-  init_res = touch.init(&touch_i2c);
-  terminal.printf("touch sensor init result %i\n", init_res);
-
-  line_start_x = -1;
-  line_start_y = -1;
-  line_end_x = -1;
-  line_end_y = -1;
-
-  led = 1;
-}
-
-CInfoTask::~CInfoTask()
-{
-
-}
-
+/*
 void CInfoTask::main()
 {
   led = 1;
@@ -96,7 +51,7 @@ void CInfoTask::main()
 
   led = 0;
 }
-
+*/
 
 int main()
 {
@@ -110,14 +65,14 @@ int main()
   unsigned int frame_buffer_size = (lcd.get_width()*lcd.get_height()*2*sizeof(uint16_t))/sizeof(uint32_t);
   uint32_t *frame_buffer = sdram.allocate(frame_buffer_size);
   lcd.init(frame_buffer);
-  lcd.FillLayer(RGB_COL_BLACK);
-  lcd.Refresh();
+
 
 
   terminal.printf("starting threads\n");
 
-  class CInfoTask info_task;
-  timer.add_task(&info_task, 10);   //period 100ms
+  NNDemo nn_demo;
+
+  timer.add_task(&nn_demo, 10);
 
 
   while (1)

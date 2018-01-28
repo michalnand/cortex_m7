@@ -87,9 +87,12 @@ class CLCD
                   int xpos_end, int ypos_end,
                   uint8_t r, uint8_t g, uint8_t b);
 
+    void DrawRectangle(int xpos, int ypos, int width, int height, uint8_t r, uint8_t g, uint8_t b, bool centered = true);
+
+
     void PlotGraph(struct sGraph graph);
 
-    uint16_t LCD_GetPixel();
+    uint16_t GetPixel();
 
     void SetMode(CLCD_MODE_t mode);
     void Rotate_0();

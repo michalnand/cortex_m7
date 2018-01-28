@@ -384,6 +384,29 @@ void CLCD::DrawLine(int xpos_start, int ypos_start,
   }
 }
 
+void CLCD::DrawRectangle(int xpos, int ypos, int width, int height, uint8_t r, uint8_t g, uint8_t b, bool centered)
+{
+  for (int y = 0; y < height; y++)
+    for (int x = 0; x < width; x++)
+    {
+      int x_ = x + xpos;
+      int y_ = y + ypos;
+
+      if (centered)
+      {
+        x_-= width/2;
+        y_-= height/2;
+      }
+
+      if (x_ < 0)
+        x_ = 0;
+
+      if (y_ < 0)
+        y_ = 0;
+      DrawPixel(x_, y_, r, g, b);
+    }
+}
+
 void CLCD::PlotGraph(struct sGraph graph)
 {
   int x_max = graph.x_points[0];
@@ -420,7 +443,7 @@ void CLCD::PlotGraph(struct sGraph graph)
   }
 }
 
-uint16_t CLCD::LCD_GetPixel()
+uint16_t CLCD::GetPixel()
 {
   uint16_t color = *(volatile uint16_t*)(aktCursorPos);
   return color;
