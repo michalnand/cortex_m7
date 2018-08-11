@@ -19,8 +19,6 @@ typedef int8_t    nn_weight_t;
 typedef int8_t    nn_layer_t;
 typedef int32_t   nn_t;
 
-
-
 /*
 typedef int8_t    nn_weight_t;
 typedef float   nn_t;

@@ -6125,12 +6125,12 @@ Disassembly of section .text:
  8003d9e:	481d      	ldr	r0, [pc, #116]	; (8003e14 <_ZN6NNDemo4mainEv+0x7c>)
  8003da0:	f7ff fc41 	bl	8003626 <_ZN8Terminal4putsEPKc>
  8003da4:	f104 0518 	add.w	r5, r4, #24
- 8003da8:	481b      	ldr	r0, [pc, #108]	; (8003e18 <_ZN6NNDemo4mainEv+0x80>)
- 8003daa:	f7ff fb0b 	bl	80033c4 <_ZN5Timer8get_timeEv>
- 8003dae:	6861      	ldr	r1, [r4, #4]
- 8003db0:	4606      	mov	r6, r0
- 8003db2:	4620      	mov	r0, r4
- 8003db4:	f7ff ffd4 	bl	8003d60 <_ZN6NNDemo17network_set_inputEj>
+ 8003da8:	6861      	ldr	r1, [r4, #4]
+ 8003daa:	4620      	mov	r0, r4
+ 8003dac:	f7ff ffd8 	bl	8003d60 <_ZN6NNDemo17network_set_inputEj>
+ 8003db0:	4819      	ldr	r0, [pc, #100]	; (8003e18 <_ZN6NNDemo4mainEv+0x80>)
+ 8003db2:	f7ff fb07 	bl	80033c4 <_ZN5Timer8get_timeEv>
+ 8003db6:	4606      	mov	r6, r0
  8003db8:	4628      	mov	r0, r5
  8003dba:	f7fe feab 	bl	8002b14 <_ZN13NeuralNetwork7forwardEv>
  8003dbe:	4628      	mov	r0, r5

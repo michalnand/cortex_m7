@@ -20,9 +20,11 @@ NNDemo::~NNDemo()
 void NNDemo::main()
 {
   terminal << "computing\n";
-  unsigned long long int time_start = timer.get_time();
 
   network_set_input(item_idx);
+
+  unsigned long long int time_start = timer.get_time();
+
   nn.forward();
   nn_result = nn.class_result();
 
