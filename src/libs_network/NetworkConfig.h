@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define ARM_CORTEX_M4_M7
+//#define ARM_CORTEX_M4_M7
 
 //#define THREADS_COUNT_4
 //#define THREADS_COUNT_8

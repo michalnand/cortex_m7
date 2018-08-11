@@ -1,6 +1,5 @@
 #include "NetworkConvolutionKernel.h"
 #include "NetworkConfig.h"
-#include "network_arm_simd.h"
 
 template<const unsigned int kernel_size>
 void t_network_convolution_kernel(  nn_layer_t *output,

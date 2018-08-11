@@ -526,7 +526,7 @@ void LCD::Puts(int xpos, int ypos, char *str, uint8_t r,  uint8_t g,  uint8_t b)
   unsigned int ptr = 0;
   while (str[ptr] != '\0')
   {
-    PutCh(xpos + ptr*FONT_MEDIUM_WIDTH, ypos, str[ptr], r, g, b);
+    PutCh(xpos + ptr*FONT_MEDIUM_WIDTH/2, ypos, str[ptr], r, g, b);
     ptr++;
   }
 }
