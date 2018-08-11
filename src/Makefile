@@ -19,7 +19,7 @@ INC+= -I ./device/STM32F7xx_HAL_Driver/Inc/
 INC_CPP+= -I ./device_cpp/
 INC_CPP+= -I ./kodama/
 
-TARGET = -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -DSTM32F746xx
+TARGET = -mthumb -mcpu=cortex-m7 -mfloat-abi=softfp -fsingle-precision-constant -DSTM32F746xx
 
 
 GCCPREFIX=arm-none-eabi-

@@ -70,9 +70,8 @@ int main()
 
   terminal.printf("starting threads\n");
 
-  NNDemo nn_demo;
 
-  timer.add_task(&nn_demo, 10);
+
 
 
   while (1)
