@@ -1,34 +1,39 @@
 #include "terminal.h"
 #include <stdarg.h>
 
-class CTerminal terminal;
+Terminal terminal;
 
 
-CTerminal::CTerminal()
-          :CUSART()
+Terminal::Terminal()
+          :Usart()
 {
 
 
 }
 
-CTerminal::~CTerminal()
+Terminal::~Terminal()
 {
 
 }
- 
-void CTerminal::puts(const char *s)
+
+void Terminal::init()
+{
+  Usart::init();
+}
+
+void Terminal::puts(const char *s)
 {
   while (*s)
     put_char(*s++);
 }
 
-void CTerminal::puts(char *s)
+void Terminal::puts(char *s)
 {
   while (*s)
     put_char(*s++);
 }
 
-void CTerminal::puti(int32_t n)
+void Terminal::puti(int32_t n)
 {
   char flag = 0, s[12];
 	unsigned char ptr;
@@ -58,7 +63,7 @@ void CTerminal::puti(int32_t n)
 	puts(s + ptr);
 }
 
-void CTerminal::putui(uint32_t n)
+void Terminal::putui(uint32_t n)
 {
 	char s[12];
 	unsigned char ptr;
@@ -78,7 +83,7 @@ void CTerminal::putui(uint32_t n)
 	puts(s + ptr);
 }
 
-void CTerminal::putx(uint32_t n)
+void Terminal::putx(uint32_t n)
 {
 	char s[12];
 	char tmp;
@@ -105,7 +110,7 @@ void CTerminal::putx(uint32_t n)
 }
 
 
-void CTerminal::putf(float n, unsigned char decimal_places)
+void Terminal::putf(float n, unsigned char decimal_places)
 {
   unsigned int i, power = 1;
 
@@ -148,7 +153,7 @@ void CTerminal::putf(float n, unsigned char decimal_places)
 
 
 
-void CTerminal::printf(const char *str, ...)
+void Terminal::printf(const char *str, ...)
 {
 	va_list args;
 	va_start(args, str);

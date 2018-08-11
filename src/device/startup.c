@@ -323,7 +323,7 @@ void Reset_Handler(void)
     SCB->CPACR|= (1<<20)|(1<<21)|(1<<22)|(1<<23);   //full access
     FPU->FPCCR&=~((1<<31)|(1<<30));                 //disable context saving, single thread FPU!!
 
-    static_init();
+  //  static_init();
 
     SystemInit();
 

@@ -1,8 +1,5 @@
 #include "lcd.h"
-
-class CLCD lcd;
-
-
+#include "font.h"
 
 #define   USE_SYNC_GPIO    1
 //#define   USE_SYNC_GPIO    0
@@ -60,19 +57,19 @@ class CLCD lcd;
 #define  RK043FN48H_HEIGHT   LCD_MAXY
 
 
+LCD lcd;
 
-
-CLCD::CLCD()
+LCD::LCD()
 {
 
 }
 
-CLCD::~CLCD()
+LCD::~LCD()
 {
 
 }
 
-void CLCD::init(uint32_t *frame_buffer_address)
+void LCD::init(uint32_t *frame_buffer_address)
 {
   frame_buffer = (uint32_t)frame_buffer_address;
   // beim init auf Landscape-Mode
@@ -91,25 +88,29 @@ void CLCD::init(uint32_t *frame_buffer_address)
 
 
   LayerInit_Fullscreen();
+
   SetLayer_1();
   FillLayer(RGB_COL_BLACK);
   SetLayer_2();
   FillLayer(RGB_COL_BLACK);
 
   SetLayer_1();
+
+  Refresh();
+
 }
 
-uint32_t CLCD::get_width()
+uint32_t LCD::get_width()
 {
   return RK043FN48H_WIDTH;
 }
 
-uint32_t CLCD::get_height()
+uint32_t LCD::get_height()
 {
   return RK043FN48H_HEIGHT;
 }
 
-void CLCD::lcd_480x272_init()
+void LCD::lcd_480x272_init()
 {
   /* Select the used LCD */
 
@@ -158,7 +159,7 @@ void CLCD::lcd_480x272_init()
 }
 
 
-void CLCD::LayerInit_Fullscreen()
+void LCD::LayerInit_Fullscreen()
 {
   LTDC_LayerCfgTypeDef  layer_cfg;
 
@@ -200,7 +201,7 @@ void CLCD::LayerInit_Fullscreen()
 }
 
 
-void CLCD::SetLayer_1()
+void LCD::SetLayer_1()
 {
   LCD_CurrentFrameBuffer = frame_buffer;
   LCD_CurrentLayer = 0;
@@ -208,7 +209,7 @@ void CLCD::SetLayer_1()
 
 
 
-void CLCD::SetLayer_2()
+void LCD::SetLayer_2()
 {
   LCD_CurrentFrameBuffer = frame_buffer + LCD_FRAME_OFFSET;
   LCD_CurrentLayer = 1;
@@ -216,7 +217,7 @@ void CLCD::SetLayer_2()
 
 
 
-void CLCD::FillLayer(uint16_t color)
+void LCD::FillLayer(uint16_t color)
 {
   uint32_t index = 0;
 
@@ -228,7 +229,7 @@ void CLCD::FillLayer(uint16_t color)
 
 
 
-void CLCD::SetTransparency(uint8_t transparency)
+void LCD::SetTransparency(uint8_t transparency)
 {
   if (LCD_CurrentLayer == 0)
   {
@@ -241,7 +242,7 @@ void CLCD::SetTransparency(uint8_t transparency)
 }
 
 
-void CLCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
+void LCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
 {
   if (xpos > get_width()-1)
     xpos = get_width()-1;
@@ -254,7 +255,7 @@ void CLCD::SetCursor2Draw(uint16_t xpos, uint16_t ypos)
   aktCursorPos=LCD_CurrentFrameBuffer+(2*((aktCursorY*LCD_MAXX)+aktCursorX));
 }
 
-void CLCD::SetCursor3Draw(int16_t xpos, int16_t ypos, int16_t zpos)
+void LCD::SetCursor3Draw(int16_t xpos, int16_t ypos, int16_t zpos)
 {
   int16_t tmp_x = xpos - (zpos*7)/10;
   int16_t tmp_y = ypos - (zpos*7)/10;
@@ -277,7 +278,7 @@ void CLCD::SetCursor3Draw(int16_t xpos, int16_t ypos, int16_t zpos)
 
 
 
-void CLCD::DrawPixel(uint16_t color)
+void LCD::DrawPixel(uint16_t color)
 {
   *(volatile uint16_t*)(aktCursorPos)=color;
 
@@ -305,13 +306,13 @@ void CLCD::DrawPixel(uint16_t color)
   aktCursorPos=LCD_CurrentFrameBuffer+(2*((aktCursorY*LCD_MAXX)+aktCursorX));
 }
 
-void CLCD::DrawPixel(uint8_t r, uint8_t g, uint8_t b)
+void LCD::DrawPixel(uint8_t r, uint8_t g, uint8_t b)
 {
   unsigned int tmp = (b >> 3) | ((g >> 2) << 5) | ((r >> 3) << 11);
-  lcd.DrawPixel(tmp);
+    DrawPixel(tmp);
 }
 
-void CLCD::DrawPixel(int xpos, int ypos, uint8_t r, uint8_t g, uint8_t b)
+void LCD::DrawPixel(int xpos, int ypos, uint8_t r, uint8_t g, uint8_t b)
 {
   unsigned int tmp = (b >> 3) | ((g >> 2) << 5) | ((r >> 3) << 11);
 
@@ -319,14 +320,14 @@ void CLCD::DrawPixel(int xpos, int ypos, uint8_t r, uint8_t g, uint8_t b)
   DrawPixel(tmp);
 }
 
-void CLCD::swap(int* a,int* b)
+void LCD::swap(int* a,int* b)
 {
 	int t=*a;
 	*a=*b;
 	*b=t;
 }
 
-void CLCD::DrawLine(int xpos_start, int ypos_start,
+void LCD::DrawLine(int xpos_start, int ypos_start,
                     int xpos_end, int ypos_end,
                     uint8_t r, uint8_t g, uint8_t b)
 {
@@ -384,7 +385,7 @@ void CLCD::DrawLine(int xpos_start, int ypos_start,
   }
 }
 
-void CLCD::DrawRectangle(int xpos, int ypos, int width, int height, uint8_t r, uint8_t g, uint8_t b, bool centered)
+void LCD::DrawRectangle(int xpos, int ypos, int width, int height, uint8_t r, uint8_t g, uint8_t b, bool centered)
 {
   for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
@@ -407,7 +408,7 @@ void CLCD::DrawRectangle(int xpos, int ypos, int width, int height, uint8_t r, u
     }
 }
 
-void CLCD::PlotGraph(struct sGraph graph)
+void LCD::PlotGraph(struct sGraph graph)
 {
   int x_max = graph.x_points[0];
   int x_min = graph.x_points[0];
@@ -443,7 +444,7 @@ void CLCD::PlotGraph(struct sGraph graph)
   }
 }
 
-uint16_t CLCD::GetPixel()
+uint16_t LCD::GetPixel()
 {
   uint16_t color = *(volatile uint16_t*)(aktCursorPos);
   return color;
@@ -452,7 +453,7 @@ uint16_t CLCD::GetPixel()
 
 
 
-void CLCD::SetMode(CLCD_MODE_t mode)
+void LCD::SetMode(LCD_MODE_t mode)
 {
   if(mode==PORTRAIT)
   {
@@ -466,19 +467,19 @@ void CLCD::SetMode(CLCD_MODE_t mode)
 
 
 
-void CLCD::Rotate_0()
+void LCD::Rotate_0()
 {
   LCD_CurrentOrientation=0;
 }
 
 
-void CLCD::Rotate_180()
+void LCD::Rotate_180()
 {
   LCD_CurrentOrientation=1;
 }
 
 
-void CLCD::Copy_Layer1_to_Layer2()
+void LCD::Copy_Layer1_to_Layer2()
 {
   uint32_t index;
   uint32_t input = frame_buffer;
@@ -492,7 +493,7 @@ void CLCD::Copy_Layer1_to_Layer2()
 
 
 
-void CLCD::Copy_Layer2_to_Layer1()
+void LCD::Copy_Layer2_to_Layer1()
 {
   uint32_t index;
   uint32_t input = frame_buffer + LCD_FRAME_OFFSET;
@@ -506,7 +507,7 @@ void CLCD::Copy_Layer2_to_Layer1()
 
 
 
-void CLCD::Refresh()
+void LCD::Refresh()
 {
   if(LCD_CurrentLayer==0)
   {
@@ -520,8 +521,77 @@ void CLCD::Refresh()
   }
 }
 
+void LCD::Puts(int xpos, int ypos, char *str, uint8_t r,  uint8_t g,  uint8_t b)
+{
+  unsigned int ptr = 0;
+  while (str[ptr] != '\0')
+  {
+    PutCh(xpos + ptr*FONT_MEDIUM_WIDTH, ypos, str[ptr], r, g, b);
+    ptr++;
+  }
+}
 
-int CLCD::map(int source_min, int source_max, int dest_min, int dest_max, int value)
+void LCD::PutInt(int xpos, int ypos, int value)
+{
+  char flag = 0, s[12];
+	unsigned char ptr;
+
+	if (value < 0)
+ 	{
+  		value = -value;
+		flag = 1;
+	}
+
+	s[11] = '\0';
+	ptr = 10;
+
+	do
+	{
+    	s[ptr] = '0' + (value%10);
+    	value/= 10;
+    	ptr--;
+	}
+    while (value != 0);
+
+	if (flag)
+		s[ptr] = '-';
+	else
+		ptr++;
+
+  Puts(xpos, ypos, s+ ptr);
+}
+
+void LCD::PutCh(int xpos, int ypos, unsigned int c, uint8_t rc,  uint8_t gc,  uint8_t bc)
+{
+  if (c < ' ')
+    c = ' ';
+
+  c-= ' ';
+
+  unsigned int font_width   = FONT_MEDIUM_WIDTH;
+  unsigned int font_height  = FONT_MEDIUM_HEIGHT;
+
+  uint32_t idx = (uint32_t)c*font_width*(font_height>>3);
+
+	for (unsigned int j = 0; j < font_height; j++)
+		for (unsigned int i = 0; i < font_width; i++)
+		{
+			uint32_t tmp_x = font_height - j + xpos;
+			uint32_t tmp_y = i + ypos;
+
+			uint8_t b = font_medium_data[idx + i + 8*(j/8)];
+			uint8_t shift = j;
+
+      if (b&(1<<shift))
+        DrawPixel(tmp_x, tmp_y, rc, gc, bc);
+      else
+        DrawPixel(tmp_x, tmp_y, 0, 0, 0);
+		}
+}
+
+
+
+int LCD::map(int source_min, int source_max, int dest_min, int dest_max, int value)
 {
   int result = 0;
 
@@ -547,7 +617,7 @@ int CLCD::map(int source_min, int source_max, int dest_min, int dest_max, int va
 
 
 
-void CLCD::lcd_480x272_ClockConfig()
+void LCD::lcd_480x272_ClockConfig()
 {
   static RCC_PeriphCLKInitTypeDef  periph_clk_init_struct;
 
@@ -564,7 +634,7 @@ void CLCD::lcd_480x272_ClockConfig()
 }
 
 
-void CLCD::lcd_480x272_MspInit()
+void LCD::lcd_480x272_MspInit()
 {
   GPIO_InitTypeDef gpio_init_structure;
 

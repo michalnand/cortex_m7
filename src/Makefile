@@ -16,8 +16,11 @@ INC = -I .
 INC+= -I ./device/CMSIS/
 INC+= -I ./device/STM32F7xx_HAL_Driver/Inc/
 
+
 INC_CPP+= -I ./device_cpp/
 INC_CPP+= -I ./kodama/
+INC_CPP+= -I ./external/
+INC_CPP+= -I ./libs_network/
 
 TARGET = -mthumb -mcpu=cortex-m7 -mfloat-abi=softfp -fsingle-precision-constant -DSTM32F746xx
 

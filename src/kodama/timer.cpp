@@ -1,17 +1,17 @@
 #include "timer.h"
 
 
-class CTimer timer;
+class Timer timer;
 
 volatile unsigned long int g_time;
 volatile struct sTimer g_timers[TIMERS_COUNT];
 
-CTimer::CTimer()
+Timer::Timer()
 {
 
 }
 
-void CTimer::init()
+void Timer::init()
 {
   unsigned char i;
 
@@ -37,7 +37,7 @@ void CTimer::init()
   __enable_irq();
 }
 
-CTimer::~CTimer()
+Timer::~Timer()
 {
 
 
@@ -48,7 +48,7 @@ CTimer::~CTimer()
 //@param period_ms executing period in miliseconds
 //@param main_loop_callback_enabled if set to true (default) task function is executed in main loop
 //if set to false, task function is executing inside interrupt rutine - and other interrupts are blocked
-int CTimer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_callback_enabled)
+int Timer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_callback_enabled)
 {
   int timer_idx = -1;
 
@@ -74,9 +74,11 @@ int CTimer::add_task(void (*callback)(), unsigned int period_ms, bool main_loop_
 }
 
 
-int CTimer::add_task(class CThread *callback_class, unsigned int period_ms, bool main_loop_callback_enabled)
+int Timer::add_task(Thread &callback_class, unsigned int period_ms, bool main_loop_callback_enabled)
 {
   int timer_idx = -1;
+
+  Thread *callback_class_ptr = &callback_class;
 
   __disable_irq();
 
@@ -87,7 +89,7 @@ int CTimer::add_task(class CThread *callback_class, unsigned int period_ms, bool
   if (timer_idx != -1)
   {
     g_timers[(unsigned char)timer_idx].callback = nullptr;
-    g_timers[(unsigned char)timer_idx].callback_class = callback_class;
+    g_timers[(unsigned char)timer_idx].callback_class = callback_class_ptr;
     g_timers[(unsigned char)timer_idx].period = period_ms;
     g_timers[(unsigned char)timer_idx].cnt = period_ms;
     g_timers[(unsigned char)timer_idx].flag = 0;
@@ -104,7 +106,7 @@ int CTimer::add_task(class CThread *callback_class, unsigned int period_ms, bool
 //run in main loop, all tasks set with main_loop_callback_enabled to true are
 //executed in their period, and celared they flags;
 //@warning - dont call test_and_clear for those tasks
-void CTimer::main()
+void Timer::main()
 {
   unsigned char i = 0;
   while (1)
@@ -127,7 +129,7 @@ void CTimer::main()
 
 //@brief set period of timer_id
 //flag will be set to nonzero value 1000/period_ms times per second
-void CTimer::set_period(unsigned char timer_id, unsigned int period_ms)
+void Timer::set_period(unsigned char timer_id, unsigned int period_ms)
 {
   __disable_irq();
   g_timers[timer_id].period = period_ms;
@@ -140,7 +142,7 @@ void CTimer::set_period(unsigned char timer_id, unsigned int period_ms)
 //if flag is nonzero, is cleared automaticly
 //when longer than one period isn't called this function, flag is incremented each
 //period, until reach 255 value
-unsigned int CTimer::test_and_clear(unsigned char timer_id)
+unsigned int Timer::test_and_clear(unsigned char timer_id)
 {
   unsigned char res = 0;
   __disable_irq();
@@ -156,7 +158,7 @@ unsigned int CTimer::test_and_clear(unsigned char timer_id)
   return res;
 }
 
-unsigned long int CTimer::get_time()
+unsigned long int Timer::get_time()
 {
   volatile unsigned long int tmp;
 
@@ -167,25 +169,25 @@ unsigned long int CTimer::get_time()
   return tmp;
 }
 
-void CTimer::delay_ms(unsigned int ms_time)
+void Timer::delay_ms(unsigned int ms_time)
 {
   volatile unsigned long int time_stop = ms_time + get_time();
   while (get_time() < time_stop)
     __asm("nop");
 }
 
-void CTimer::delay_loops(unsigned long int loops)
+void Timer::delay_loops(unsigned long int loops)
 {
   while (loops--)
     __asm("nop");
 }
 
-void CTimer::reset()
+void Timer::reset()
 {
   stop_watch_init_value = get_time();
 }
 
-unsigned long int CTimer::elapsed_time()
+unsigned long int Timer::elapsed_time()
 {
   return get_time() - stop_watch_init_value;
 }
@@ -236,7 +238,7 @@ void TIM2_IRQHandler()
 
 
 
-void CTimer::timer_2_init(uint32_t frq_hz)
+void Timer::timer_2_init(uint32_t frq_hz)
 {
   uint32_t clk_frq;
   uint16_t prescaler, period;

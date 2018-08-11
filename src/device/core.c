@@ -14,7 +14,7 @@ void core_init()
   core_cpu_cache_enable();
   HAL_Init();
 
-  //core_SystemClock_Config_180();
+  // core_SystemClock_Config_180();
   core_SystemClock_Config_216();
 }
 

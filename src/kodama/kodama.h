@@ -13,9 +13,4 @@
 
 #include <mem.h>
 
-#include <fast_math.h>
-#include <pca.h>
-
-#include <pid.h>
-
 #endif
