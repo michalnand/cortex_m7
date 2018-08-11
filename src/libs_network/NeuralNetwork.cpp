@@ -95,14 +95,14 @@ void NeuralNetwork::allocate_buffer()
   {
     unsigned int required_size = get_required_buffer_size();
 
-    /*
+
     buffer_a = new nn_layer_t[required_size];
     buffer_b = new nn_layer_t[required_size];
-    */
 
+/*
     buffer_a = (nn_layer_t*)sdram.allocate(required_size/4);
     buffer_b = (nn_layer_t*)sdram.allocate(required_size/4);
-
+*/
 
 
     input   = buffer_a;

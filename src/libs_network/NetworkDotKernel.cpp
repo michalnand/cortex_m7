@@ -2,7 +2,7 @@
 
 
 
-#ifdef ARM_CORTEX_M4_M7
+#ifdef ARM_CORTEX_M4_M7AAAAAAAA
 
 typedef int32_t q31_t;
 typedef int16_t q15_t;

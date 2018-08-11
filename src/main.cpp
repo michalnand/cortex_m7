@@ -7,6 +7,8 @@
 
 #include <nn_demo/nn_demo.h>
 
+#include "network_arm_simd.h"
+
 void delay_loops(unsigned int loops)
 {
   while (loops--)
@@ -59,6 +61,18 @@ void modules_init()
 
 }
 
+void smlad_test()
+{
+  /*
+  uint32_t res = 0;
+  uint32_t a = 0;
+  uint32_t b = 0;
+
+  res = __nn_SMLAD(a, b, res);
+  terminal << res << "\n";
+*/
+}
+
 int main()
 {
   core_init();
@@ -71,39 +85,16 @@ int main()
   TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
   led = 1;
 
+  smlad_test();
+
   while (1)
   {
-
     led = 1;
-    timer.delay_ms(50);
-    led = 0;
-    timer.delay_ms(950);
-
     nn_demo.main();
-  }
-
-  /*
-  terminal.init();
-  timer.init();
-
-  sdram.init();
-
-
-  while (1)
-  {
-    led = 1;
-    terminal.printf("starting threads\n");
-    timer.delay_ms(10);
     led = 0;
 
-    timer.delay_ms(100);
+    timer.delay_ms(200);
   }
-
-
-  unsigned int frame_buffer_size = (lcd.get_width()*lcd.get_height()*2*sizeof(uint16_t))/sizeof(uint32_t);
-  uint32_t *frame_buffer = sdram.allocate(frame_buffer_size);
-  lcd.init(frame_buffer);
-  */
 
   return 0;
 }
