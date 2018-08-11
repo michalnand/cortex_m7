@@ -18,7 +18,6 @@
 #include "layer_15.h"
 #include "layer_16.h"
 
-#include <terminal.h>
 
 MyNetDCNN::MyNetDCNN()
 			:NeuralNetwork()

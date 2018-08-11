@@ -38,5 +38,5 @@ void NetConvolutionLayer::forward(nn_layer_t *output, nn_layer_t *input)
                              m_bias_range,
 
                              m_input_geometry,
-                             m_kernel_geometry); 
+                             m_kernel_geometry);
 }

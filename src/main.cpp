@@ -3,23 +3,14 @@
 #include "external/lcd.h"
 #include "external/ft5336.h"
 
-#include <kodama.h>
 
 #include <nn_demo/nn_demo.h>
 
-#include "network_arm_simd.h"
+TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
 
-void delay_loops(unsigned int loops)
-{
-  while (loops--)
-    __asm("nop");
-}
 
 void modules_init()
 {
-  TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
-  led = 1;
-
   terminal.init();
   mem.init();
 
@@ -61,31 +52,13 @@ void modules_init()
 
 }
 
-void smlad_test()
-{
-  /*
-  uint32_t res = 0;
-  uint32_t a = 0;
-  uint32_t b = 0;
-
-  res = __nn_SMLAD(a, b, res);
-  terminal << res << "\n";
-*/
-}
-
 int main()
 {
   core_init();
 
   modules_init();
 
-
   NNDemo nn_demo;
-
-  TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
-  led = 1;
-
-  smlad_test();
 
   while (1)
   {

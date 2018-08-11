@@ -56,7 +56,6 @@ NetMaxPoolingLayer::~NetMaxPoolingLayer()
 void NetMaxPoolingLayer::forward(nn_layer_t *output, nn_layer_t *input)
 {
   unsigned int size = m_kernel_geometry.w;
-
   switch (size)
   {
     case 2:   network_max_pooling_kernel<2>(output, input, m_output_geometry); break;

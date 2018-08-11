@@ -28,7 +28,6 @@ void t_network_convolution_kernel(  nn_layer_t *output,
           nn_t dot_result = 0;
           nn_t bias_result;
 
-
           for (unsigned int ch = 0; ch < in_channels; ch++)
           {
             unsigned int input_idx = (ch*in_height + y)*in_width + x;
@@ -78,6 +77,20 @@ void t_network_convolution_kernel(  nn_layer_t *output,
               dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
               dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
               input_idx+=  in_width - kernel_size;
+
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              input_idx+=  in_width - kernel_size;
+
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              dot_result+= ((int16_t)w[filter_idx])*((int16_t)input[input_idx]); filter_idx++; input_idx++;
+              input_idx+=  in_width - kernel_size;
             }
           }
 
@@ -95,6 +108,7 @@ void t_network_convolution_kernel(  nn_layer_t *output,
           output[output_idx] = result;
         }
 }
+
 
 void network_convolution_kernel(  nn_layer_t *output,
                                   nn_layer_t *input,
@@ -154,7 +168,7 @@ void network_convolution_kernel(  nn_layer_t *output,
 
 
 /*
-void naive_network_convolution_kernel(  nn_layer_t *output,
+void network_convolution_kernel(  nn_layer_t *output,
                                     nn_layer_t *input,
                                     nn_weight_t *w,
                                     nn_weight_t *bias,
