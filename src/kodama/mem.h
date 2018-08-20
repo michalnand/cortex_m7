@@ -2,7 +2,7 @@
 #define _MEM_H_
 
 
-class CMem
+class Mem
 {
   friend class CTest;
 
@@ -10,10 +10,12 @@ class CMem
     unsigned char *mem_ptr;
 
   public:
-    CMem(unsigned int external_ram_adr = 0);
-    ~CMem();
+    Mem();
+    ~Mem();
 
-    void print_info();
+    void init();
+
+    void print();
 
     void *malloc(unsigned int size);
     void free(void *p);
@@ -22,8 +24,8 @@ class CMem
     void clean();
 };
 
-extern class CMem mem;
 
+extern Mem mem;
 
 void * operator new(unsigned int size);
 void operator delete(void * p);

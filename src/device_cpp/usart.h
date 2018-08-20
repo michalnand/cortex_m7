@@ -6,11 +6,11 @@
 #define NO_CHAR       0xffff
 
 
-class CUSART
+class Usart
 {
   public:
-    CUSART();
-    ~CUSART();
+    Usart();
+    ~Usart();
 
     void init();
 

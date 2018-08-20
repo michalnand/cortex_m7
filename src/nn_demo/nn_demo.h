@@ -1,55 +1,31 @@
 #ifndef _NN_DEMO_H_
 #define _NN_DEMO_H_
 
+#include "MyNetDCNN/MyNetDCNN.h"
 
-#include <device/core.h>
-
-#include "external/ft5336.h"
-#include "external/lcd.h"
-
-#include <kodama.h>
-
-
-#define NN_INPUT_SIZE   81
-#define NN_RESULT_SIZE  10
-
-class NNDemo: public CThread
+class NNDemo
 {
   private:
-    TGpio<TGPIOI, 1, GPIO_MODE_OUT> led;
+    unsigned int item_idx;
+    unsigned int nn_result, correct, wrong, duration;
 
-    TI2C<TGPIOH, 8, 7, I2C_SPEED> touch_i2c;
-    FT5336 touch;
-
-    int width, height;
-    int x_position, y_position;
-
-    int pooling;
-
-    int nn_input[NN_INPUT_SIZE];
-    int nn_output[NN_RESULT_SIZE];
-
-
+    MyNetDCNN nn;
 
   public:
     NNDemo();
-
-    void init();
+    virtual ~NNDemo();
 
     void main();
 
   private:
-    void process_mouse();
-    void refresh();
-    bool in_widget(int x, int y);
-    void clean();
+    void show_dataset_item(unsigned int idx);
+    void show_result();
 
-    void draw_pooled();
 
-    void process_pooling();
-    void draw_nn_result();
+  private:
+    unsigned char* get_dataset_item(unsigned int idx);
+    void network_set_input(unsigned int idx);
 
 };
-
 
 #endif

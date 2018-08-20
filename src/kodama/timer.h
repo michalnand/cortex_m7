@@ -7,7 +7,7 @@
 struct sTimer
 {
   void (*callback)();
-  class CThread *callback_class;
+  class Thread *callback_class;
   unsigned int period, cnt;
   unsigned char flag;
   bool main_loop_callback_enabled;
@@ -16,14 +16,14 @@ struct sTimer
 
 
 
-class CTimer
+class Timer
 {
   private:
     unsigned long int stop_watch_init_value;
 
   public:
-    CTimer();
-    ~CTimer();
+    Timer();
+    ~Timer();
 
     void init();
 
@@ -34,7 +34,7 @@ class CTimer
     //if set to false, task function is executing inside interrupt rutine - and other interrupts are blocked
     int add_task(void (*callback)(), unsigned int period_ms, bool main_loop_callback_enabled = true);
 
-    int add_task(class CThread *callback_class, unsigned int period_ms, bool main_loop_callback_enabled = true);
+    int add_task(Thread &callback_class, unsigned int period_ms, bool main_loop_callback_enabled = true);
 
 
     //@brief start real timer tasks executing
@@ -68,6 +68,6 @@ class CTimer
     void timer_2_init(uint32_t frq_hz);
 };
 
-extern class CTimer timer;
+extern Timer timer;
 
 #endif

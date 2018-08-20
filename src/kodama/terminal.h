@@ -3,11 +3,13 @@
 
 #include <kodama.h>
 
-class CTerminal: public CUSART
+class Terminal: public Usart
 {
   public:
-    CTerminal();
-    ~CTerminal();
+    Terminal();
+    ~Terminal();
+
+    void init();
 
     void puts(const char *s);
     void puts(char *s);
@@ -17,55 +19,55 @@ class CTerminal: public CUSART
     void putf(float n, unsigned char decimal_places);
     void printf(const char *str, ...);
 
-    CTerminal& operator<< (char op)
+    Terminal& operator<< (char op)
     {
       put_char(op);
       return *this;
     }
 
-    CTerminal& operator<< (const char *op)
+    Terminal& operator<< (const char *op)
     {
       puts(op);
       return *this;
     }
 
-    CTerminal& operator<< (char *op)
+    Terminal& operator<< (char *op)
     {
       puts(op);
       return *this;
     }
 
-    CTerminal& operator<< (int op)
+    Terminal& operator<< (int op)
     {
       puti(op);
       return *this;
     }
 
-    CTerminal& operator<< (int32_t op)
+    Terminal& operator<< (int32_t op)
     {
       puti(op);
       return *this;
     }
 
-    CTerminal& operator<< (uint32_t op)
+    Terminal& operator<< (uint32_t op)
     {
       putui(op);
       return *this;
     }
 
-    CTerminal& operator<< (unsigned int op)
+    Terminal& operator<< (unsigned int op)
     {
       putui(op);
       return *this;
     }
 
-    CTerminal& operator<< (float op)
+    Terminal& operator<< (float op)
     {
       putf(op, 3);
       return *this;
     }
 };
 
-extern class CTerminal terminal;
+extern Terminal terminal;
 
 #endif

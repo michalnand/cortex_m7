@@ -18,19 +18,19 @@
 
 
 
-CUSART::CUSART()
+Usart::Usart()
 {
 
 
 }
 
-CUSART::~CUSART()
+Usart::~Usart()
 {
 
 
 }
 
-void CUSART::init()
+void Usart::init()
 {
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
@@ -70,7 +70,7 @@ void CUSART::init()
   HAL_UART_Init(&UartHandle1);
 }
 
-void CUSART::put_char(char c)
+void Usart::put_char(char c)
 {
   while( !(USART->ISR & USART_ISR_TXE) )
 		__asm("nop");
@@ -78,7 +78,7 @@ void CUSART::put_char(char c)
 	USART->TDR = c;
 }
 
-char CUSART::get_char()
+char Usart::get_char()
 {
   unsigned int c;
   while ( (c = ischar()) == NO_CHAR)
@@ -89,7 +89,7 @@ char CUSART::get_char()
   return 0;
 }
 
-unsigned int CUSART::ischar()
+unsigned int Usart::ischar()
 {
   if (USART->ISR & USART_ISR_RXNE)
   {

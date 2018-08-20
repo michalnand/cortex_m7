@@ -1,194 +1,121 @@
 #include "nn_demo.h"
-#include <fast_math.h>
+#include "dataset.h"
 
-#include "tiny_net.h"
+#include <lcd.h>
+#include <terminal.h>
+#include <timer.h>
 
 NNDemo::NNDemo()
 {
-  init();
+  item_idx = 0;
+  correct  = 0;
+  wrong    = 0;
 }
 
-void NNDemo::init()
+NNDemo::~NNDemo()
 {
-  pooling = 20;
-  width   = 9*pooling;
-  height  = 9*pooling;
 
-  x_position = 0;
-  y_position = 0;
-
-  for (unsigned int i = 0; i < NN_INPUT_SIZE; i++)
-    nn_input[i] = 0;
-
-  lcd.FillLayer(RGB_COL_BLACK);
-  lcd.Refresh();
-
-  touch.init(&touch_i2c);
-
-  nn.init();
 }
 
 void NNDemo::main()
 {
-  touch.read();
+  terminal << "computing\n";
 
-  lcd.SetLayer_1();
+  network_set_input(item_idx);
 
-  process_mouse();
+  unsigned long long int time_start = timer.get_time();
 
-  process_pooling();
+  nn.forward();
+  nn_result = nn.class_result();
 
-  for (unsigned int i = 0; i < nn.get_input_size(); i++)
-    nn.input[i] = -nn_input[i];
+  unsigned long long int time_stop = timer.get_time();
 
-  timer.reset();
-  nn.process();
-  unsigned int computing_time = timer.elapsed_time();
-  terminal.printf("nn computing time %u [ms]\n", computing_time);
+  if (nn_result == labels[item_idx])
+    correct++;
+  else
+    wrong++;
+  duration = time_stop - time_start;
 
-  for (unsigned int i = 0; i < NN_RESULT_SIZE; i++)
-    nn_output[i] = nn.output[i];
-
-
-  draw_nn_result();
-
-
-  refresh();
+  show_dataset_item(item_idx);
+  show_result();
   lcd.Refresh();
-}
 
-void NNDemo::refresh()
-{
-  unsigned char r = 255;
-  unsigned char g = 255;
-  unsigned char b = 255;
 
-  lcd.DrawLine(x_position, y_position, x_position+width, y_position, r, g, b);
-  lcd.DrawLine(x_position, y_position+height, x_position+width, y_position+height, r, g, b);
-  lcd.DrawLine(x_position, y_position, x_position, y_position+height, r, g, b);
-  lcd.DrawLine(x_position+height, y_position, x_position+width, y_position+height, r, g, b);
+  item_idx = (item_idx + 1)%DATASET_COUNT;
 }
 
 
-
-void NNDemo::process_mouse()
+void NNDemo::show_dataset_item(unsigned int idx)
 {
-  for (unsigned int i = 0; i < touch.get_detected_count(); i++)
-  {
-    int x = touch.result[i].y;
-    int y = touch.result[i].x;
-
-    if (in_widget(x, y))
-    {
-      lcd.DrawRectangle(x, y, 16, 16, 255, 255, 0);
-    }
-
-    if ( (x > (int)lcd.get_width() - 50) &&
-         (y > (int)lcd.get_height() - 50) )
-      clean();
-  }
-}
-
-void NNDemo::draw_pooled()
-{
-  unsigned int x_ofs = x_position + width + 10;
-  unsigned int y_ofs = y_position + height/2 + 10;
+  unsigned char *item = get_dataset_item(idx);
 
   unsigned int ptr = 0;
-  for (unsigned int y = 0; y < 9; y++)
-    for (unsigned int x = 0; x < 9; x++)
-    {
-      unsigned char color = 0;
 
-      if (nn_input[ptr] > 0)
-        color = 255;
-      lcd.DrawPixel(x + x_ofs, y + y_ofs, color, color, color);
-      ptr++;
-    }
-}
+  unsigned int x_ofs = lcd.get_height()/2 - DATASET_HEIGHT/2;
+  unsigned int y_ofs = 50 + lcd.get_width()/4  - DATASET_WIDTH/2;
 
-bool NNDemo::in_widget(int x, int y)
-{
-  if (x < x_position)
-    return false;
-
-  if (y < y_position)
-    return false;
-
-  if (x > x_position+width)
-    return false;
-
-  if (y > y_position+height)
-      return false;
-
-  return true;
-}
-
-
-void NNDemo::clean()
-{
-  for (int y = 0; y < height; y++)
-    for (int x = 0; x < width; x++)
-      lcd.DrawPixel(x + x_position, y + y_position, 0, 0, 0);
-}
-
-void NNDemo::process_pooling()
-{
-  for (unsigned int i = 0; i < NN_INPUT_SIZE; i++)
-    nn_input[i] = -127;
-
-  for (int y = 1; y < height-1; y++)
-    for (int x = 1; x < width-1; x++)
-    {
-      lcd.SetCursor2Draw(x + x_position, y + y_position);
-      unsigned int pixel = lcd.GetPixel();
-
-      unsigned int pooled_x = x/pooling;
-      unsigned int pooled_y = y/pooling;
-      unsigned int idx = pooled_y*9 + pooled_x;
-
-      if (pixel != 0)
-        nn_input[idx] = 127;
-    }
-}
-
-void NNDemo::draw_nn_result()
-{
-  int max = -1000000;
-  int min = -max;
-
-  for (unsigned int i = 0; i < NN_RESULT_SIZE; i++)
+  for (unsigned int x = 0; x < DATASET_WIDTH+2; x++)
   {
-    if (nn_output[i] > max)
-      max = nn_output[i];
-
-    if (nn_output[i] < min)
-      min = nn_output[i];
+    lcd.DrawPixel(x + x_ofs - 1, -1 + y_ofs, 255, 255, 255);
+    lcd.DrawPixel(x + x_ofs - 1, DATASET_HEIGHT + y_ofs, 255, 255, 255);
   }
 
-  int max_size = 100;
-
-  if (max != min)
+  for (unsigned int y = 0; y < DATASET_HEIGHT+2; y++)
   {
-    float k = (max_size - 0.0)/(max - min);
-    float q = max_size - k*max;
-
-
-    for (unsigned int i = 0; i < NN_RESULT_SIZE; i++)
-    {
-       nn_output[i] = k*nn_output[i] + q;
-    }
+    lcd.DrawPixel(-1 + x_ofs, y + y_ofs - 1, 255, 255, 255);
+    lcd.DrawPixel(DATASET_WIDTH + x_ofs, y + y_ofs - 1, 255, 255, 255);
   }
 
-  for (unsigned int i = 0; i < NN_RESULT_SIZE; i++)
+  for (unsigned int y = 0; y < DATASET_HEIGHT; y++)
+    for (unsigned int x = 0; x < DATASET_WIDTH; x++)
+    {
+      uint8_t r, g, b;
+
+      if (DATASET_CHANNELS == 3)
+      {
+        r = item[ptr + 0];
+        g = item[ptr + 1];
+        b = item[ptr + 2];
+        ptr+=3;
+      }
+      else
+      {
+        r = item[ptr];
+        g = item[ptr];
+        b = item[ptr];
+        ptr++;
+      }
+
+      lcd.DrawPixel(x + x_ofs, y + y_ofs, r, g, b);
+    }
+}
+
+
+
+
+void NNDemo::show_result()
+{
+  terminal << "correct " << correct << ", wrong " << wrong << ", time " << duration << " [ms]\n";
+
+  lcd.Puts(0, 0, "dense neural network demo", 255, 255, 255);
+  lcd.Puts(0, 20, "network answer", 255, 200, 0);    lcd.PutInt(250, 20, nn_result);
+  lcd.Puts(0, 40, "Correct", 0, 255, 0);            lcd.PutInt(250, 40, correct);
+  lcd.Puts(0, 60, "Wrong", 255, 0, 0);              lcd.PutInt(250, 60, wrong);
+  lcd.Puts(0, 80, "Time [ms]", 255, 255, 255);      lcd.PutInt(250, 80, duration);
+
+}
+
+unsigned char* NNDemo::get_dataset_item(unsigned int idx)
+{
+  return (unsigned char*)(dataset + idx*DATASET_WIDTH*DATASET_HEIGHT*DATASET_CHANNELS);
+}
+
+void NNDemo::network_set_input(unsigned int idx)
+{
+  unsigned char *item = get_dataset_item(idx);
+  for (unsigned int i = 0; i < nn.input_size(); i++)
   {
-    int element_width  = nn_output[i];
-    int element_height = 15;
-
-    int x_start = width + 20;
-    int y_start = 10 + i*(element_height + 2);
-
-    lcd.DrawRectangle(x_start, y_start, max_size, element_height, 0, 0, 50, false);
-    lcd.DrawRectangle(x_start, y_start, element_width, element_height, 0, 255, 0, false);
+    int v = item[i]/2;
+    nn.get_input()[i] = v;
   }
 }

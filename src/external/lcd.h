@@ -4,17 +4,16 @@
 
 #include "stm32f7xx.h"
 #include "stm32f7xx_hal.h"
-#include <fast_math.h>
 
 //--------------------------------------------------------------
 // Display Mode
 //--------------------------------------------------------------
-typedef enum {
+typedef enum
+{
   PORTRAIT =0,
   LANDSCAPE
-}CLCD_MODE_t;
-
-extern class CLCD lcd;
+}
+  LCD_MODE_t;
 
 
 
@@ -23,6 +22,8 @@ extern class CLCD lcd;
 #define  RGB_COL_GREEN          0x07E0
 #define  RGB_COL_RED            0xF800
 #define  RGB_COL_WHITE          0xFFFF
+#define  RGB_COL_GREEN_DARK     0x01E0
+
 
 #define  RGB_COL_CYAN           0x07FF
 #define  RGB_COL_MAGENTA        0xF81F
@@ -41,14 +42,14 @@ struct sGraph
 
 
 
-class CLCD
+class LCD
 {
   protected:
     uint32_t LCD_CurrentFrameBuffer;
     uint32_t LCD_CurrentLayer;
     uint32_t LCD_CurrentOrientation;
 
-    CLCD_MODE_t  LCD_DISPLAY_MODE;
+    LCD_MODE_t  LCD_DISPLAY_MODE;
 
     //--------------------------------------------------------------
     // Globale Variabeln
@@ -62,8 +63,8 @@ class CLCD
 
 
   public:
-    CLCD();
-    ~CLCD();
+    LCD();
+    ~LCD();
 
     void init(uint32_t *frame_buffer_address);
 
@@ -94,7 +95,7 @@ class CLCD
 
     uint16_t GetPixel();
 
-    void SetMode(CLCD_MODE_t mode);
+    void SetMode(LCD_MODE_t mode);
     void Rotate_0();
     void Rotate_180();
 
@@ -103,13 +104,20 @@ class CLCD
 
     void Refresh();
 
+  public:
+    void Puts(int xpos, int ypos, char *str, uint8_t r = 255,  uint8_t g = 255,  uint8_t b = 255);
+    void PutCh(int xpos, int ypos, unsigned int c, uint8_t rc = 255,  uint8_t gc = 255,  uint8_t bc = 255);
+    void PutInt(int xpos, int ypos, int value);
+
   private:
     void lcd_480x272_init();
     void lcd_480x272_ClockConfig();
     void lcd_480x272_MspInit();
     void swap(int* a,int* b);
     int map(int source_min, int source_max, int dest_min, int dest_max, int value);
-
 };
+
+
+extern class LCD lcd;
 
 #endif

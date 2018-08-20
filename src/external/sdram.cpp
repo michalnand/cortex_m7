@@ -1,6 +1,6 @@
 #include "sdram.h"
 
-class CSDRam sdram;
+class SDRam sdram;
 
 #define SDRAM_MAX_ADR        ((uint32_t)0x800000)     // max = 8MBytes
 #define SDRAM_START_ADR      ((uint32_t)0xC0000000)
@@ -71,19 +71,19 @@ class CSDRam sdram;
 
 
 
-CSDRam::CSDRam()
+SDRam::SDRam()
 {
 
 }
 
-CSDRam::~CSDRam()
+SDRam::~SDRam()
 {
 
 }
 
-unsigned int CSDRam::init(bool full_test)
+int SDRam::init(bool full_test)
 {
-  unsigned int result = 1;
+  int result = 0;
   ram_init();
 
   uint32_t value_input_init = 0xCAFE1234;
@@ -105,16 +105,16 @@ unsigned int CSDRam::init(bool full_test)
       uint32_t value_output = Read32b(i);
 
       if (value_input != value_output)
-        result = 0;
+        result = -1;
     }
   }
   else
   {
     Write32b(0, value_input_init);
     if (value_input_init != Read32b(0))
-      result = 0;
+      result = -1;
     else
-      result = 1;
+      result = 0;
   }
 
   for (unsigned int i = 0; i < get_size(); i+= 4)
@@ -125,18 +125,18 @@ unsigned int CSDRam::init(bool full_test)
   return result;
 }
 
-uint32_t* CSDRam::get_start_address()
+uint32_t* SDRam::get_start_address()
 {
   return (uint32_t*)SDRAM_START_ADR;
 }
 
-uint32_t CSDRam::get_size()
+uint32_t SDRam::get_size()
 {
   return SDRAM_MAX_ADR;
 }
 
 
-uint32_t* CSDRam::allocate(unsigned int size)
+uint32_t* SDRam::allocate(unsigned int size)
 {
   uint32_t *result = sd_mem_ptr;
   sd_mem_ptr+= size;
@@ -145,12 +145,12 @@ uint32_t* CSDRam::allocate(unsigned int size)
 }
 
 
-void CSDRam::Write8b(uint32_t adr, uint8_t value)
+void SDRam::Write8b(uint32_t adr, uint8_t value)
 {
   *(uint8_t*) (SDRAM_START_ADR + adr) = value;
 }
 
-uint8_t CSDRam::Read8b(uint32_t adr)
+uint8_t SDRam::Read8b(uint32_t adr)
 {
   uint8_t result=0;
 
@@ -159,12 +159,12 @@ uint8_t CSDRam::Read8b(uint32_t adr)
   return(result);
 }
 
-void CSDRam::Write16b(uint32_t adr, uint16_t value)
+void SDRam::Write16b(uint32_t adr, uint16_t value)
 {
   *(uint16_t*) (SDRAM_START_ADR + adr) = value;
 }
 
-uint16_t CSDRam::Read16b(uint32_t adr)
+uint16_t SDRam::Read16b(uint32_t adr)
 {
   uint16_t result=0;
 
@@ -174,12 +174,12 @@ uint16_t CSDRam::Read16b(uint32_t adr)
 }
 
 
-void CSDRam::Write32b(uint32_t adr, uint32_t value)
+void SDRam::Write32b(uint32_t adr, uint32_t value)
 {
   *(uint32_t*) (SDRAM_START_ADR + adr) = value;
 }
 
-uint32_t CSDRam::Read32b(uint32_t adr)
+uint32_t SDRam::Read32b(uint32_t adr)
 {
   uint32_t result=0;
 
@@ -188,22 +188,22 @@ uint32_t CSDRam::Read32b(uint32_t adr)
   return(result);
 }
 
-void CSDRam::WriteBuffer32b(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
+void SDRam::WriteBuffer32b(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
 {
   HAL_SDRAM_Write_32b(&sdramHandle, (uint32_t *)(startAdr+SDRAM_START_ADR), ptrBuffer, lenBuffer);
 }
 
-void CSDRam::ReadBuffer32b(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
+void SDRam::ReadBuffer32b(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
 {
   HAL_SDRAM_Read_32b(&sdramHandle, (uint32_t *)(startAdr+SDRAM_START_ADR), ptrBuffer, lenBuffer);
 }
 
-void CSDRam::WriteBuffer32bDMA(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
+void SDRam::WriteBuffer32bDMA(uint32_t* ptrBuffer, uint32_t startAdr, uint32_t lenBuffer)
 {
   HAL_SDRAM_Write_DMA(&sdramHandle, (uint32_t *)(startAdr+SDRAM_START_ADR), ptrBuffer, lenBuffer);
 }
 
-void CSDRam::ram_init()
+void SDRam::ram_init()
 {
   /* SDRAM device configuration */
   sdramHandle.Instance = FMC_SDRAM_DEVICE;
@@ -238,7 +238,7 @@ void CSDRam::ram_init()
 }
 
 
-void CSDRam::ram_initialization_sequence(uint32_t RefreshCount)
+void SDRam::ram_initialization_sequence(uint32_t RefreshCount)
 {
   __IO uint32_t tmpmrd = 0;
 
@@ -297,7 +297,7 @@ void CSDRam::ram_initialization_sequence(uint32_t RefreshCount)
   HAL_SDRAM_ProgramRefreshRate(&sdramHandle, RefreshCount);
 }
 
-void CSDRam::msp_init()
+void SDRam::msp_init()
 {
 
 

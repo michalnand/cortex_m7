@@ -8,7 +8,7 @@
 
 
 
-class CSDRam
+class SDRam
 {
   private:
     SDRAM_HandleTypeDef sdramHandle;
@@ -18,10 +18,10 @@ class CSDRam
     uint32_t *sd_mem_ptr;
 
   public:
-    CSDRam();
-    ~CSDRam();
+    SDRam();
+    ~SDRam();
 
-    unsigned int init(bool full_test = true);
+    int init(bool full_test = true);
 
     uint32_t* get_start_address();
     uint32_t get_size();
@@ -49,7 +49,7 @@ class CSDRam
     void msp_init();
 };
 
-extern class CSDRam sdram;
+extern SDRam sdram;
 
 
 #endif

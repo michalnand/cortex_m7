@@ -1,14 +1,14 @@
 #ifndef _THREAD_H_
 #define _THREAD_H_
 
-class CThread
+class Thread
 {
   public:
-    
-    CThread() { }
-    virtual ~CThread() { }
 
-    virtual void main() = 0;
+    Thread() { }
+    virtual ~Thread() { }
+
+    virtual void main() { };
 };
 
 #endif
